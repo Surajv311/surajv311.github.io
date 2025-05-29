@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: How did I install TensorFlow after struggling for a week!__Example
-category: oldArticles__Example
+category: oldArticles_or_nonTechArticles_or_technicalArticles__Example
 ---
 
 Now I know, after reading the title many of you might question me like am I serious? Did I took so much time to install one of the most popular machine learning libraries — ‘TensorFlow’ on my PC? And my answer is a perfect ‘yes’ for that! By the way, I am a windows user :)
