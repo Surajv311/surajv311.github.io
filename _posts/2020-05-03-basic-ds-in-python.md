@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Struggling with basic data structures in Python?
-category: oldArticles
+category: technicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Do you know the real reason behind Indira Gandhi’s assassination?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

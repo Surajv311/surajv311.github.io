@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: An insight to get/post requests in Nodejs !
-category: oldArticles
+category: technicalArticles
 ---
 
 > Article also published in [Hashnode](https://surajv.hashnode.dev/) & [Dev.to](https://dev.to/surajv).

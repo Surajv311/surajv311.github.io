@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Can I visit Nagaland with just a train ticket?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

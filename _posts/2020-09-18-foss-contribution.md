@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: 5 mistakes that can be avoided as a beginner in FOSS contribution!
-category: oldArticles
+category: technicalArticles
 ---
 
 > Article also published in [Hashnode](https://surajv.hashnode.dev/) & [Dev.to](https://dev.to/surajv).

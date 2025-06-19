@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Digital Marketing- A Quick Recap
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

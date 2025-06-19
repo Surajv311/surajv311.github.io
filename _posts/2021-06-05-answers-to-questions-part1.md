@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Answers to Questions you never asked! [Part-1]
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

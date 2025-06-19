@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Could Obama run for the US presidency for the third time?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

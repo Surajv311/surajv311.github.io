@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: How Amazon is incorporating technology in the management of its supply chain?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: The cousins of the GPS navigation system
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

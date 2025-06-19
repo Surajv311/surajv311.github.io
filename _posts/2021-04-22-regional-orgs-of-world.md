@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Regional Organizations of the World
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

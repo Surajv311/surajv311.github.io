@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: USSR- history of history!
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).
