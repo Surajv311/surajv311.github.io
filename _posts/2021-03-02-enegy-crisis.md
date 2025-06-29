@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Will petroleum help during Global Energy Crisis?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

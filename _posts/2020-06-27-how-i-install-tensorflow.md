@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: How did I install TensorFlow after struggling for a week!
-category: oldArticles
+category: technicalArticles
 ---
 
 > Article also published in [Hashnode](https://surajv.hashnode.dev/) & [Dev.to](https://dev.to/surajv).

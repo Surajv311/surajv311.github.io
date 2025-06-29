@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Have you ever heard of G-8 countries in the world?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

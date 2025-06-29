@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Tale behind India’s Richest Temple
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

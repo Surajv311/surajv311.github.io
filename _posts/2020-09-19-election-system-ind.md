@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Is the Election System in India very complex?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).

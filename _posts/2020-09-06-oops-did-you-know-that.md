@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: OOPS! Did you know that?
-category: oldArticles
+category: technicalArticles
 ---
 
 > Article also published in [Hashnode](https://surajv.hashnode.dev/) & [Dev.to](https://dev.to/surajv).

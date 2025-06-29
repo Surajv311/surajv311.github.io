@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: What is the story behind Balochistan?
-category: oldArticles
+category: nonTechnicalArticles
 ---
 
 > Article also published in [Medium](https://surajsv.medium.com/).
