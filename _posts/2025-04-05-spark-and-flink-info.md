@@ -105,10 +105,12 @@ Hardware Level Configuration:
 - Cluster Configuration: When running Spark jobs at scale, hardware configuration plays a crucial role: 
   - Nodes in Cluster: A typical Spark cluster consists of several nodes (machines) configured as follows: Each node can act as either a master (running the driver) or worker (running executors). Worker nodes should have sufficient CPU cores and memory allocated based on workload requirements.
   - Resource Allocation: Each executor runs within its own JVM process on worker nodes. Configuration settings like spark.executor.memory and spark.executor.cores determine how much memory and how many cores each executor will use. Example configuration in spark-defaults.conf:
+
     ```
     spark.executor.memory=4g
     spark.executor.cores=2
     ```
+    
   - Data Locality: Spark tries to schedule tasks close to where data resides (data locality) to minimize network I/O and improve performance.
   - Networking: Adequate network bandwidth is essential for efficient communication between drivers and executors, especially when shuffling data between stages.
   - Storage Systems: Integration with distributed storage systems like HDFS or cloud storage solutions (e.g., Amazon S3) allows Spark to read/write large datasets efficiently.
@@ -145,6 +147,7 @@ Job Manager: It is the master component responsible for coordinating the executi
           - Sink Operators: Write data to external systems (e.g., databases, message queues).
           - Eg: SingleOutputStreamOperator is used to represent a transformation that produces one output stream. This is commonly used when applying functions like map or filter to a DataStream.
       - Example code snippet: Here’s a simple example using Flink’s DataStream API to count words from a socket stream:
+
         ```
         // java
         import org.apache.flink.api.common.functions.FlatMapFunction;
@@ -181,20 +184,25 @@ Job Manager: It is the master component responsible for coordinating the executi
         The stream is keyed by word and summed to count occurrences.
         */
         ```
+        
       - Useful: [ref](https://datafans.medium.com/flink-commonly-used-operator-transformation-8832a3490d47)
     - Parallelism in Flink: The parallelism of a task can be specified in Flink on different levels.  
       - Operator Level: The parallelism of an individual operator, data source, or data sink can be defined by calling its setParallelism() method. Eg: 
-      - ```
+
+        ```
         private SingleOutputStreamOperator<JsonNode> filter(DataStream<JsonNode> stream) {
             return stream.process(new SplitPayTransactionChargedEventFilter())
                     .name(NU_SPLITPAY_TRANSACTION_CHARGED_EVENT_STREAM_FILTER).setParallelism(10);
         }
         ```
+        
       - Execution Environment Level: An execution environment defines a default parallelism for all operators, data sources, and data sinks it executes. Execution environment parallelism can be overwritten by explicitly configuring the parallelism of an operator. Eg:
-      - ```
+
+        ```
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(Integer.valueOf(parameterTool.get("PIPELINE_PARALLELISM")));
         ```
+        
       - When calling setParallelism on an operator, then it changes the parallelism of this specific operator. Consequently, you can set for each operator a different parallelism. However, be aware that operators with different parallelism cannot be chained and entail a rebalance (similar to a shuffle) operation. If you want to set the parallelism for all operators, then you have to do it via the ExecutionEnvironment#setParallelism API call.
       - Useful: [ref](https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/execution/parallel/), [ref2](https://stackoverflow.com/questions/44436401/some-puzzles-for-the-operator-parallelism-in-flink/44437182#44437182)
   - If we deploy flink on EKS clusters, you can define in the deployment yaml config the parallelism you want to set. Some cases:
@@ -260,6 +268,7 @@ Job Manager: It is the master component responsible for coordinating the executi
     - Pod: The smallest object of the Kubernetes ecosystem, a Pod represents a group of one or more containers running together on your cluster.
     - Service: An abstraction which defines a set of pods and makes sure that network traffic can be directed to the pods for the workload.
   - Flink logs are pushed to Opensearch in flink related log index & deployment pipeline uses concourse. Consider this config:
+
     ```
     taskmanager.numberOfTaskSlots: "5"
     jobManager:
@@ -274,6 +283,7 @@ Job Manager: It is the master component responsible for coordinating the executi
     ## This would mean 10/5 ~ 2 Task managers would be spawned. We must have underlying infra with the given requirements else, it would be difficult to scale up. 
     ## Assume we have 1 Job manager
     ```
+    
     - Pod is the smallest unit in K8s. In a single pod, it is possible to have multiple containers running, but generally there is only a single container running. You can image a 1:1 mapping in Pod:Container.
     - Based on above configs ideally there would be 1 (for JManager) + 2 (for TManager) = 3 containers running in the namespace or 3 pods running in the namespace. 
     - Pods will be running on a single/multiple EC2 machines, but it will be ensured that the infra which is given in defined in config file is provided. So consider the 2 Task managers, each one running in a pod would be running on top of a machine with 16g memory and 4 cpu cores. For both of them it would be 32g memory and 8 cpu cores in total. 
@@ -326,10 +336,12 @@ Job Manager: It is the master component responsible for coordinating the executi
 - Stateful pipelines:
   - Making any changes in operators, like changing its UID or so, in a pipeline where deployment configuration eks yaml is set to last-state and redeploying changes in Flink-EKS, can cause issues with job coming up as the job manager may run into issues when constructing the job graph from the old checkpoint if not handled properly. Even if we clean up the checkpoint/savepoint folder (btw, in a stateful pipeline, there should be both checkpoint/savepoint folders, else it will give errors. We can’t have either of one only) and redeploy, there can be issues.
   - One may have to clear up all the resources of the EKS container and rebuilt it (with whatever config is present in eks yaml file and use the kubectl commands). Other way is we set the pipeline to stateless and deploy with the new changes, let it checkpoint in background, and then revert back upgradeMode state to last-state, with this it may come up without issues. For unprocessed data in stream you could set the kafka offset to 1hr back (temporarily, later revert to latest offset), so that it reprocesses from an hour back. Of course, if requirement is at-least once, then this has to be handled differently. 
+
   ```
   KafkaSource.builder().setStartingOffsets(OffsetsInitializer.latest()) - For latest offset reading
   KafkaSource.builder().setStartingOffsets(OffsetsInitializer.timestamp(1592323200000L)) - For time based offset reading. 1592323200000L - Will be epoch time in milliseconds (can be IST in our case)
   ```
+  
   - In eks deployment yaml file you may use: `upgradeMode` key. The upgradeMode setting determines how Flink jobs behave during upgrades or restarts:
     - last-state mode: When a job is upgraded or restarted, it will attempt to restore from the most recent successful checkpoint. This preserves the processing state and allows the job to continue from where it left off.
     - stateless mode: The job will start from scratch after an upgrade, without attempting to restore any previous state. This is like a completely fresh deployment.
@@ -346,10 +358,13 @@ Job Manager: It is the master component responsible for coordinating the executi
 - Flink Operations:
   - Transformations:
     - map: One-to-one transformation that applies a function to each element. 
+
     ```
     dataStream.map(event -> event.toUpperCase());
     ```
+    
     - flatMap: One-to-many transformation that can produce zero, one, or multiple elements for each input. 
+
     ```
     dataStream.flatMap((event, out) -> {     
     for (String word : event.split(" ")) {         
@@ -357,54 +372,76 @@ Job Manager: It is the master component responsible for coordinating the executi
     } 
     });
     ```
+    
     - filter: Keeps elements that satisfy a condition 
+
     ```
     dataStream.filter(event -> event.contains("error"));
     ```
+    
   - Keying & Partitioning
     - keyBy: Groups the stream by a key (creates a KeyedStream) 
+
     ```
     dataStream.keyBy(event -> event.getUserId());
     ```
+    
     - shuffle: Redistributes elements randomly 
+
     ```
     dataStream.shuffle();
     ```
+
     - rebalance: Evenly distributes elements across tasks 
+
     ```
     dataStream.rebalance();
     ```
+
     - rescale: Redistributes elements in a round-robin fashion among downstream tasks 
+
     ```
     dataStream.rescale();
     ```
+
     - broadcast: Replicates each element to all parallel tasks 
+
     ```
     dataStream.broadcast()
     ```
+    
   - Aggregations & Windows
     - reduce: Combines elements of a KeyedStream using a reduce function 
+
     ```
     keyedStream.reduce((a, b) -> new Sum(a.value + b.value));
     ```
+
     - aggregate: Applies an aggregation function (like sum, min, max) 
+
     ```
     keyedStream.sum("amount"); 
     keyedStream.min("latency"); 
     keyedStream.max("value");
     ```
+
     - window: Groups elements of a stream into finite sets based on time or count 
+
     ```
     keyedStream.window(TumblingEventTimeWindows.of(Time.seconds(5))); 
     keyedStream.window(SlidingProcessingTimeWindows.of(Time.seconds(10), Time.seconds(5))); 
     keyedStream.countWindow(100, 10); // sliding count window
     ```
+
     - windowAll: Creates a window on a non-keyed stream 
+
     ```
     dataStream.windowAll(TumblingProcessingTimeWindows.of(Time.minutes(1)));
     ```
+    
   - Joining & Combining
     - join: Joins two data streams based on a key 
+
     ```
     stream1.join(stream2)
     .where(e1 -> e1.getKey())        
@@ -412,7 +449,9 @@ Job Manager: It is the master component responsible for coordinating the executi
     .window(TumblingEventTimeWindows.of(Time.seconds(5)))        
     .apply((e1, e2) -> new Tuple2<>(e1, e2));
     ```
+
     - coGroup: Groups and joins two streams in a more flexible way than join 
+
     ```
     stream1.coGroup(stream2)        
     .where(e1 -> e1.getKey())        
@@ -420,17 +459,23 @@ Job Manager: It is the master component responsible for coordinating the executi
     .window(TumblingEventTimeWindows.of(Time.seconds(5)))        
     .apply(new CoGroupFunction<...>() {...});
     ```
+
     - union: Combines multiple streams of the same type
+
     ```
     stream1.union(stream2, stream3);
     ```
+
     - connect: Combines two streams of potentially different types 
+
     ```
     stream1.connect(stream2)        
     .map(new CoMapFunction<Type1, Type2, ResultType>() {...});
     ```
+    
   - Advanced Processing
     - process: Offers the most flexibility for stream processing 
+
     ```
     keyedStream.process(new KeyedProcessFunction<Key, Input, Output>() {
     @Override     
@@ -440,13 +485,17 @@ Job Manager: It is the master component responsible for coordinating the executi
     } 
     });
     ```
+    
     - iterate: Creates a feedback loop in the dataflow 
+
     ```
     IterativeStream<Integer> iteration = input.iterate(); 
     DataStream<Integer> iterationBody = iteration.map(/* do something */); 
     iteration.closeWith(iterationBody.filter(/* termination logic */));
     ```
+    
     - side output: Produces output to multiple side channels 
+
     ```
     OutputTag<String> rejectedTag = new OutputTag<String>("rejected"){}; 
     SingleOutputStreamOperator<String> mainStream = dataStream.process(
@@ -462,7 +511,9 @@ Job Manager: It is the master component responsible for coordinating the executi
     });
     DataStream<String> rejectedStream = mainStream.getSideOutput(rejectedTag);
     ```
+    
     - async I/O: Performs asynchronous operations on stream elements 
+
     ```
     AsyncDataStream.unorderedWait(
     stream,     
@@ -471,6 +522,7 @@ Job Manager: It is the master component responsible for coordinating the executi
     TimeUnit.MILLISECONDS,     
     100);
     ```
+    
 - Watermarks:
   - Watermarks are special markers that flow through your data stream, essentially telling the system: "All events with timestamps earlier than this watermark have likely arrived". Note that it in no way indicates if data is processed downstream or not, just senses if data arrived or not. (example in end)
   - Stream processing often needs to work with time windows (like "count events in the last 5 minutes"). But in distributed systems:
@@ -511,6 +563,7 @@ Job Manager: It is the master component responsible for coordinating the executi
         - It might be dropped or processed as a late event depending on your configuration
       - After E7 (12:30:35), Flink emits WM4 (12:30:25)
       - The watermarks essentially flow through your stream as special markers between regular data events. Each operator in your pipeline uses these watermarks to make decisions about when to trigger window computations, when to consider events as late, and when to emit results for operations like joins. For join operations, Flink waits until both input streams have received watermarks that cover the relevant time range before producing join results. This ensures that all potential matching events have been considered.
+
       ```
       Mental model 1: 
       Think of watermarks as the "last call" announcement in a restaurant.
@@ -546,6 +599,7 @@ Job Manager: It is the master component responsible for coordinating the executi
         Advancing Mechanism: The clock advances not based on wall-clock time, but when new events with higher timestamps arrive in the system.
         This model captures how watermarks serve as an internal timing mechanism that allows distributed stream processors to make coordinated decisions about when certain operations can be considered complete, based on the timestamps present in the data itself rather than external time.
       ```
+      
     - If watermarks are set to the latest timestamp without any delay (i.e., no buffer for late events), several significant problems can arise in real-time streaming applications: Problems with Improper Watermark Configuration:
     - Excessive Late Event Dropping
       - Without a delay buffer, any event arriving slightly out of order would be considered late
@@ -579,14 +633,17 @@ Job Manager: It is the master component responsible for coordinating the executi
     - This is crucial for multi-stream operations like your interval join
     - Without this, if one stream stops receiving events, its watermark would freeze, potentially blocking the progress of joins. This ensures that your entire pipeline doesn't stall if one stream temporarily stops producing events.
     - Eg: 
+
       ```
       .withIdleness(Duration.ofMinutes(2))
       In above, by using this setting, 
       if no events arrive for 2 minutes, Flink will assume the stream is idle and 
       advance its watermark to match the system time.
       ```
+      
 - Timestamp Assignment: 
   - Below eg.; It extracts the actual event time from each record, converting the timestamp string to milliseconds since epoch.
+
   ```
   .withTimestampAssigner((event, l) -> {
   return  
@@ -596,7 +653,9 @@ Job Manager: It is the master component responsible for coordinating the executi
   .toEpochMilli(); 
   })
   ```
+  
 - Example of all: Consider a below piece of code, where we have 2 streams joining:
+
 ```
 // Stream of events
 SingleOutputStreamOperator<BaseEventA> eventAMappedStream = StreamA
@@ -637,6 +696,7 @@ SingleOutputStreamOperator<ProcessedEvent> joinedStream = eventAMappedStream.key
         .uid("Processed-Join-Stream-Event")
         .name("Processed-Join-Stream-Event");
 ```
+
   - Understanding Watermarks and Windows in Stream Processing
     - Let's consider the two streams in your code:
       - eventAMappedStream - Events from set of services A - Stream 1
@@ -718,6 +778,7 @@ SingleOutputStreamOperator<ProcessedEvent> joinedStream = eventAMappedStream.key
       - For File Systems (like FileSink): When using the FileSink or similar components, checkpoints also store:
           - Pending File Information: References to files that are in the "pending" state, File paths, Creation timestamps, Size information, Target final locations
           - In-Progress File Information: References to files that were being written at the time of the checkpoint: Current paths, Current sizes, Open file handles (conceptually), etc.
+            
   ```
   // Sample Filesink Code
   public class DataS3Sink {
@@ -773,6 +834,7 @@ SingleOutputStreamOperator<ProcessedEvent> joinedStream = eventAMappedStream.key
   }
   // Note: To enable checkpointing: env.enableCheckpointing(checkpointIntervalMinutes * 60 * 1000); // Takes millisec as input
   ```
+  
   - Unlike S3 sink, Kafka sink can work without explicit checkpointing. Few points: 
     - Different Delivery Guarantees: Kafka itself provides durability by storing messages on disk, once its accepted it, its considered saved | FileSink, by contrast, needs checkpointing to ensure data is properly committed to S3
     - Transactional Behavior: Kafka sink by default uses a "at-least-once" delivery guarantee; It doesn't need to coordinate commit points across the job, but to have "exactly-once" semantics, you would need to enable both checkpointing and transactions in the Kafka sink as well
@@ -785,7 +847,8 @@ SingleOutputStreamOperator<ProcessedEvent> joinedStream = eventAMappedStream.key
 - Other Flink functions: 
   - SingleOutputStream + RichAsyncFunction + Sideoutput combined example:
     - In short, function takes input stream does some processing and returns output stream. If any error is popped up, it is handled in a side stream. Sample eg: 
-    - ```
+
+      ```
       Eg:
         
       public class UpdateUser extends RichAsyncFunction<UserEvent, Either<ProcessingResult, GenericException>> {
@@ -841,8 +904,10 @@ SingleOutputStreamOperator<ProcessedEvent> joinedStream = eventAMappedStream.key
       // Assuming got extractedEvents from kafka stream and now processing it
       SingleOutputStreamOperator<ProcessingResult> results = updateUserDetails(extractedEvents); 
       results.getSideOutput(ExceptionTags.GENERIC_EXCEPTION_OUTPUT_TAG).process(new GenericExceptionRaiseAlertProcessor());
-      ``` 
+      ```
+      
   - Sample Kafka as a source for Flink pipeline code:
+
     ```
     public class EventsKafkaSource {
     private static final Logger log = LoggerFactory.getLogger(EventsKafkaSource.class);
