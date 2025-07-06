@@ -836,9 +836,9 @@ SingleOutputStreamOperator<ProcessedEvent> joinedStream = eventAMappedStream.key
   ```
   
   - Unlike S3 sink, Kafka sink can work without explicit checkpointing. Few points: 
-    - Different Delivery Guarantees: Kafka itself provides durability by storing messages on disk, once its accepted it, its considered saved | FileSink, by contrast, needs checkpointing to ensure data is properly committed to S3
-    - Transactional Behavior: Kafka sink by default uses a "at-least-once" delivery guarantee; It doesn't need to coordinate commit points across the job, but to have "exactly-once" semantics, you would need to enable both checkpointing and transactions in the Kafka sink as well
-    - KafkaSink forwards data immediately to Kafka brokers | FileSink writes to local temporary files first, then coordinates their movement to the final destination
+    - Kafka itself provides durability by storing messages on disk, once its accepted it, its considered saved; FileSink, by contrast, needs checkpointing to ensure data is properly committed to S3
+    - Kafka sink by default uses a "at-least-once" delivery guarantee; It doesn't need to coordinate commit points across the job, but to have "exactly-once" semantics, you would need to enable both checkpointing and transactions in the Kafka sink as well added reference in next points.
+    - KafkaSink forwards data immediately to Kafka brokers; FileSink writes to local temporary files first, then coordinates their movement to the final destination
 - At most once, at least once, exactly once principle: [ref](https://blog.bytebytego.com/p/at-most-once-at-least-once-exactly)
   - At-most once:It means a message will be delivered not more than once. Messages may be lost but are not redelivered.
   - At-least once: It means it’s acceptable to deliver a message more than once, but no message should be lost.
