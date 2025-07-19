@@ -18,4 +18,10 @@ This article is an attempt to do so, where I jot down interesting things.
   - (In progress)
   - 
 
+frequent rainstorms hammer this part of the coast
+birds dive under the canopy of forest looking for shleter
+
+wiggle of tail
+
+
 ---------------------------------------
