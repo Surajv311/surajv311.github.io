@@ -37,11 +37,13 @@ ORDER BY
 Crisp points learned & strategy: 
 - Post discussing with teams - it was found concrete requirement of data was only for 1 week, hence we could proceed with deleting data older than 7 days. Expected downtime was communicated in advance. 
 - Key PostgreSQL Concepts
-  - By default, PostgreSQL is a single-node OLTP (Online Transaction Processing) database, with: one primary (writable) instance & no built-in read replicas. In real-world deployments, PostgreSQL is often extended like below. This setup is implemented using streaming replication or tools like: Amazon RDS/Aurora for PostgreSQL (managed reader endpoints), etc. 
+  - By default, PostgreSQL is a single-node OLTP (Online Transaction Processing) database, with: one primary (writable) instance & no built-in read replicas. In real-world deployments, PostgreSQL is often extended like below. This setup is implemented using streaming replication or tools like: Amazon RDS/Aurora for PostgreSQL (managed reader endpoints), etc.
+    
     | Role                 | Description                                                    |
     | -------------------- | -------------------------------------------------------------- |
     | **Writer** (Primary) | Handles all **write** operations: `INSERT`, `UPDATE`, `DELETE` |
     | **Reader** (Replica) | Handles **read-only** queries. Replicated from primary.        |
+    
   - **Table Bloat:**
     - When rows are updated or deleted in PostgreSQL, the old versions are not physically removed immediately. This leads to table bloat.
     - What Happens Internally:
