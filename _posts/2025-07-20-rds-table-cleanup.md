@@ -72,7 +72,7 @@ Crisp points learned & strategy:
     - 10-20 minute downtime
     - No backfill required
     - Minimal impact
-      - **Step 0: Readers (eg: Analytics workflows) and writers (eg: Kafka consumer) to the table were stopped temporarily**  
+      - **Step 0: Readers (eg: Analytics workflows) and writers (eg: Kafka consumer) to the table were stopped temporarily, turned on later once the activity was complete**  
       - **Step 1: Rename existing table**
         ```sql
         ALTER TABLE tableNameX RENAME TO tableNameX_Old;
