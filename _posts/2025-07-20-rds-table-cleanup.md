@@ -37,21 +37,47 @@ ORDER BY
 Crisp points learned & strategy: 
 - Post discussing with teams - it was found concrete requirement of data was only for 1 week, hence we could proceed with deleting data older than 7 days. Expected downtime was communicated in advance. 
 - Key PostgreSQL Concepts
+  - By default, PostgreSQL is a single-node OLTP (Online Transaction Processing) database, with: one primary (writable) instance & no built-in read replicas. In real-world deployments, PostgreSQL is often extended like below. This setup is implemented using streaming replication or tools like: Amazon RDS/Aurora for PostgreSQL (managed reader endpoints), etc. 
+    | Role                 | Description                                                    |
+    | -------------------- | -------------------------------------------------------------- |
+    | **Writer** (Primary) | Handles all **write** operations: `INSERT`, `UPDATE`, `DELETE` |
+    | **Reader** (Replica) | Handles **read-only** queries. Replicated from primary.        |
   - **Table Bloat:**
-    - Dead tuples from UPDATE/DELETE operations
-    - Space not immediately reclaimed
-    - Requires VACUUM to mark as reusable
-    - Excessive bloat degrades query performance
+    - When rows are updated or deleted in PostgreSQL, the old versions are not physically removed immediately. This leads to table bloat.
+    - What Happens Internally:
+      - PostgreSQL uses MVCC (Multi-Version Concurrency Control).
+      - An UPDATE creates a new row version (tuple) and marks the old one as dead.
+      - A DELETE marks the row as dead, but doesn’t remove it.
+      - These dead tuples still occupy disk space.
+      - Over time, with many updates/deletes, the table grows in size (bloats), even if the row count doesn’t.
+    - Impact:
+      - Slower sequential scans and index usage
+      - Increased I/O due to reading bloated pages
+      - Sluggish performance for frequently updated tables
   - **Auto-vacuum:**
-    - Automatically removes dead tuples
-    - Runs when threshold reached
-    - Can lock tables during operation
-    - Essential but can impact performance on large tables
+    - Auto-Vacuum is PostgreSQL’s background process that automatically cleans up dead tuples to control bloat and maintain visibility maps.
+    - What Happens Internally:
+      - PostgreSQL tracks how many tuples are updated or deleted.
+      - When thresholds are crossed (autovacuum_vacuum_threshold + fraction of table), the autovacuum daemon kicks in. It: Scans the table and visibility map, Removes dead tuples (if not visible to any active transaction), Updates the free space map (FSM) and visibility map
+      - If it’s doing an aggressive freeze (e.g., nearing vacuum_freeze_max_age), it may take heavier locks or consume more I/O.
+      - Notes:
+        - Typically holds an ACCESS SHARE lock, which doesn’t block reads/writes.
+        - On very large tables, it can compete with application queries for CPU and I/O.
+        - If not tuned properly, autovacuum may lag behind, leading to excessive bloat or even transaction wraparound issues.
   - **TOAST (The Oversized-Attribute Storage Technique):**
-    - Stores large column values separately
-    - Triggered when row size exceeds ~2KB
-    - Adds complexity to cleanup operations
-- Existing deletion strategy using `DELETE` was not effective. 
+    - TOAST handles storage of large data types like text, bytea, or jsonb that exceed a threshold (typically ~2KB).
+    - What Happens Internally:
+      - When a row contains a large column (e.g., a big text field), PostgreSQL:
+        - Compresses the value (if possible)
+        - If still too large, stores the value in a separate TOAST table
+        - The main table stores a pointer to the TOAST data
+      - The TOAST table is created automatically, one per main table.
+      - TOAST data is stored in chunks (usually 2KB) in the TOAST table.
+    - Cleanup Complexity:
+      - VACUUM and autovacuum must also manage the TOAST table.
+      - Large updates or deletes may leave dead TOAST tuples as well.
+      - If TOAST cleanup is missed or delayed, it can cause hidden bloat. 
+- Coming back, existing deletion strategy using `DELETE` was not effective. 
   - DELETE operations don't reclaim disk space immediately
   - Creates massive amounts of dead tuples (bloat)
   - Triggers aggressive auto-vacuum cycles
