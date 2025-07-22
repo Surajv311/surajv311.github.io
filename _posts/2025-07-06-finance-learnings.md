@@ -1906,8 +1906,8 @@ We'll cover fundamental analysis ratios that help evaluate a company or financia
 #### Pattern Recognition
 
 - Good videos around candlestick pattern & strategies: 
-  - [Read_Candlestick_Charts_Beginner_Guide](https://github.com/Surajv311/surajv311.github.io/blob/main/public/videos/Read_Candlestick_Charts_Beginner_Guide.mp4)
-  - [Trading_Strategies](https://github.com/Surajv311/surajv311.github.io/blob/main/public/videos/Trading_Strategies.mp4)
+  - [Read_Candlestick_Charts_Beginner_Guide - Wysetrade](https://www.youtube.com/watch?v=AOz1YPOKvEs)
+  - [Trading_Strategies - DataTrader](https://www.youtube.com/watch?v=ZX-Tp4zgJYc)
 - **Candlestick Patterns**
   - <img src="{{ site.baseurl }}/public/images/stock-candlesticks.png" alt="candlestick pattern" class="blog-image">
   - **Single Candle Patterns**:
