@@ -61,17 +61,18 @@ Crisp points learned & strategy:
 - Solution Options Evaluated
   - **Option 1: New Table with Different Name**
     - Minimal downtime
-    - Risk: Services might miss updating table name
+    - Risk: Consumer services might miss updating table name
     - Rejected due to operational risk/backward compatibility in workflows.
   - **Option 2: Recreate with Daily Partitions**
     - Same table name maintained
-    - 1-3 hours downtime
+    - 1-3 hours downtime as copying data to new table, dropping old table, renaming new table with old table name. 
     - Data builds back over 7 days
   - **Option 3: Drop and Recreate (Selected)**
     - Was discussed and ensured losing old data is fine, and reloading fresh data. 
     - 10-20 minute downtime
     - No backfill required
     - Minimal impact
+      - **Step 0: Readers (eg: Analytics workflows) and writers (eg: Kafka consumer) to the table were stopped temporarily**  
       - **Step 1: Rename existing table**
         ```sql
         ALTER TABLE tableNameX RENAME TO tableNameX_Old;
