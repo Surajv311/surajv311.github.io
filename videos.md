@@ -18,11 +18,6 @@ title: Videos
         Udemy Course - NumPy for Data Science
         </a>
     </li>
-    <li>
-        <a href="" target="_blank">
-        In-progress... 
-        </a>
-    </li>
 </ul>
 
 ------------------------------------------------

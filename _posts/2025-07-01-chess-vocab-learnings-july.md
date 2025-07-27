@@ -27,7 +27,7 @@ CheckMate's:
 - Fool's mate: 1.f3 e5 2.g4 Qh4# (checkmate)
   - <img src="{{ site.baseurl }}/public/images/chessvocab/fools_mate.png" alt="fools mate" class="blog-image">
 
-Stalemate: ... 
+Stalemate: Details to be added... 
 
 ---------------------------
 
