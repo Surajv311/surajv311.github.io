@@ -45,8 +45,7 @@ they are insightful indeed. Adding them here to revisit in the future.
   - 9) Lord Krishna: Fundamental figure from another Hindu epic, Mahabharata, Lord Vishnu incarnated himself as Lord Krishna in the Dwapara Yuga for two significant events. In the first, Lord Krishna defeated his evil maternal uncle, Kansa. And in the second half, he was the mentor of the Pandavas during the battle of Kurukshetra.
   - 10) Kalki: It is believed that Lord Vishnu will appear on a white horse with a mighty sword in the present Yuga or the Kali Yuga and destroy the evil existing in mankind. Interestingly, it is also said that the entire cycle of four worlds will restart after Kali Yuga ends.
 - If the legend is to be believed, Lord Hanuman visits Setuu Hanuman Bodhi temple located in the jungles of Piduru mountain, Sri Lanka. Most of the tribals in Sri Lanka are said to be Vibhishana’s descendants but this one particular tribe called ‘Mathangs’ is related to Lord Hanuman. People of this tribe claim that Lord Hanuman is immortal and visits them every 41 years. The people of this tribe consider Hanuman as their Guru who has supreme knowledge that shows them the right path. The Mathangs also maintain a ‘logbook’ where they record all the words spoken and ‘leelas’ performed by Lord Hanuman. A Sri Lankan organization called Setuu is studying this ‘logbook’ and also conduct programmes for Hanuman devotees who can do ‘Sadhna‘ under the guidance of Setuu masters. Devotees who qualify all the criteria will be eligible for Hanuman’s ‘sakshaat darshan‘.
-- 
-- 
+
 
 --------------------------------------------
 

@@ -20,8 +20,13 @@ Crisp points on things that worked bring down p99 of the API from 150'ish ms to 
 - Ensured if the API calls made to db's are in the same VPC (though it may not really make major difference), 
 - Checked with other teams if they call service with keep-alive TCP connections options (would reduce TCP handshake for every new connection/API call which is made)
 - Worked with teams to have some of the relevant data sent in API post body itself, rather than us calling some external APIs to fetch the same data from them.
-- Have to explore if caching (external via Redis or internal maintaining something in a data-structure - logic evaluation caching) fits in any usecase for similar requests we get.
+- Have to explore if caching (external via Redis or internal maintaining something in a data-structure - logic evaluation caching) fits in any usecase for similar requests we get + explore if the way we do evaluation in rules, can we fit multi-threading so that we find the satisfying rule(s) from all set after evaluation, and based on priority return the desired rule only, rather than o(n) iteration in single thread - although drawback is for every request all conditions would evaluate rather than ones which could've been evaluated first and exit. 
+- Other application code changes: Used set{} than list[] in places which hold related data - so that access pattern is optimized (o(1) avg case). Segregated evaluation logic based on common attributes in rules, so that lesser rules are evaluated for related type of user request. Also is boundary conditions were breached, we exited quicker rather than running whole evaluation. Updated rules having NOT condition with help of previously segregated flow. We used expressions in rules, which were substituted with values used for evaluation with help of Template() library - internally it used Abstract Syntax Tree as seen, for ingredients used in rules - Unnecessary/redundant ingredients were trimmed down, so that internally the AST formed is smaller during evaluations. Each rule's evaluation time was also benchmarked via time perf_counter functions.  
 - Etc. 
+
+<img src="{{ site.baseurl }}/public/images/rule_evaluate.png" alt="rule_evaluate pic" class="blog-image">
+
+<img src="{{ site.baseurl }}/public/images/p99-fapi.png" alt="p99 api pic" class="blog-image">
 
 ------------------------------------------------
 

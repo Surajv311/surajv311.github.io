@@ -2109,6 +2109,68 @@ Beyond traditional value investing, special situations offer unique opportunitie
     - Consistent growth record
     - Strong balance sheet
 
+- **Volatility Indicators**
+  - **India VIX (Volatility Index)**:
+    - Below 15: Low volatility, potential complacency
+    - 15-20: Normal market conditions
+    - 20-30: Elevated uncertainty
+    - Above 30: Extreme fear/uncertainty
+    - Contrarian indicator at extremes
+  - **VIX Futures**:
+    - Shows expected future volatility
+
+- **Options Market Indicators**
+  - **Put-Call Ratio (PCR)**:
+    - Types:
+      - Volume-based PCR
+      - Open Interest PCR
+    - Interpretation:
+      - PCR > 1.3: Extreme bearishness (contrarian bullish)
+      - PCR < 0.7: Extreme bullishness (contrarian bearish)
+      - 0.9-1.1: Neutral sentiment
+  - **Options Pain Theory**:
+    - Max pain levels act as magnets
+  - **Skew Index**:
+    - Reflects perception of tail risk
+
+- **Market Breadth Indicators**
+  - **Advance-Decline Ratio**:
+    - Formula: Advancing stocks / Declining stocks
+    - Above 2: Very strong breadth
+    - 1.5-2: Strong breadth
+    - Below 0.5: Weak breadth
+    - Divergence with index: Warning signal
+  - **New Highs-Lows Indicator**:
+    - More new highs: Bullish market
+    - More new lows: Bearish market
+    - Shrinking new highs in a rally: Weakening signal
+  - **Market Cap Participation**:
+    - Compare large-cap vs mid-cap vs small-cap
+    - Broad participation is healthier than narrow
+
+- **Delivery and Investment Patterns**
+  - **Delivery Percentage**:
+    - Above 60%: Strong investment demand
+    - 40-60%: Normal trading activity
+    - Below 40%: High speculative activity
+  - **Cash Market Volumes**:
+    - Higher volumes confirm directional moves
+  - **DII Category Analysis**:
+    - Breakdown by Insurance, Mutual Funds, and Others
+
+- **Technical Market Indicators (others)**
+  - **McClellan Oscillator**:
+    - Measures breadth momentum
+    - Above +100: Overbought breadth
+    - Below -100: Oversold breadth
+    - Zero line crossovers signal shifts in trend
+  - **TRIN (Arms Index)**:
+    - Combines advances/declines with volume
+    - Below 1: Bullish pressure
+    - Above 1: Bearish pressure
+  - **High-Low Index**:
+    - Tracks percentage of stocks making new highs
+
 #### Institutional Activity Tracking
 
 - **FII/DII Flow Analysis**
@@ -2382,6 +2444,7 @@ Earning money is great, but being able to minimize taxes legally is even better.
 
 ## Other Info
 
+- None for now. 
 
 
 **[⬆️ Back to Top](#table-of-contents)**
