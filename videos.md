@@ -9,18 +9,13 @@ title: Videos
 
 <ul>
     <li>
-        <a href="https://www.youtube.com/watch?v=n9wG-E7hjFg&ab_channel=Jarusv" target="_blank">
-        Opensourcing my learnings | Building pyflink pipeline | 1
+        <a href="https://www.youtube.com/@jarusve" target="_blank">
+        Youtube Channel - Jarusve's videos
         </a>
     </li>
     <li>
         <a href="https://www.udemy.com/course/numpyfords/" target="_blank">
         Udemy Course - NumPy for Data Science
-        </a>
-    </li>
-    <li>
-        <a href="" target="_blank">
-        In-progress... 
         </a>
     </li>
 </ul>

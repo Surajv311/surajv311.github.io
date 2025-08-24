@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Chess & Vocabulary Learnings - July
+title: Chess & Vocabulary Learnings
 category: nonTechnicalArticles
 ---
 
-I’ve been trying to learn and improve my chess skills—I've recently found it quite interesting—but I haven’t had the time to pursue it consistently.
+I’ve been trying to learn and improve my chess skills—found it quite interesting lately—but I haven’t had the time to pursue it consistently.
 Secondly, whenever I read articles, hear someone speak well, or watch movies, series, or listen to songs, I realize that English vocabulary is another area where I have room to grow. While I don’t think I’m a bad speaker or reader, I genuinely want to improve my proficiency in this area.
-This monthly article is my attempt to focus on the areas mentioned above, where I jot down interesting things I come across.
+This article is my attempt to focus on the areas mentioned above, where I jot down interesting things I come across. I will continue to update this page regularly as I learn interesting stuff.
 
 ## Chess: 
 
@@ -21,13 +21,13 @@ This monthly article is my attempt to focus on the areas mentioned above, where 
 
 <img src="{{ site.baseurl }}/public/images/chessvocab/chessboard.jpg" alt="chessboard" class="blog-image">
 
-CheckMate's:
+Checkmate's:
 - Scholar's mate: 1.e4 e5 2.Qh5 Nc6 3.Bc4 Nf6 4.Qxf7# (checkmate)
   - <img src="{{ site.baseurl }}/public/images/chessvocab/scholars_mate.png" alt="scholars mate" class="blog-image">
 - Fool's mate: 1.f3 e5 2.g4 Qh4# (checkmate)
   - <img src="{{ site.baseurl }}/public/images/chessvocab/fools_mate.png" alt="fools mate" class="blog-image">
 
-Stalemate: ... 
+Stalemate: ...  
 
 ---------------------------
 
