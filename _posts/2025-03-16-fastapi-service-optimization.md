@@ -32,4 +32,4 @@ Crisp points on things that worked bring down p99 of the API from 150'ish ms to 
   <img src="{{ site.baseurl }}/public/images/api-metrics-p99.png" alt="api-metrics-p99" class="blog-image">
 
 ------------------------------------------------
-
+ 
