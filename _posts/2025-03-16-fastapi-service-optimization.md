@@ -8,8 +8,7 @@ category: technicalArticles
 
 One of things I've worked on in my time at Simpl is optimizing a backend service (Python FastAPI based) - the service used to evaluate user based on some rules and returned a response. As a part of evaluation we used ingredients we got from API post body request, called external db's to get some data, external APIs to get some data, ran evaluation logic and returned a response. 
 Crisp points on things that worked bring down p99 of the API from 150'ish ms to 75'ish ms - p90/95 were even lower ofcourse; Note that there are some more avenues I see to optimize this further, but got occupied with other priority work, hence did not spend time there, but will work again in near future.
-- Firstly, for monitoring had integrated OTel telemetry metrics, and monitored critical functions used in API flow and what was is taking most time. Ensured this is not blocking main thread. 
-<img src="{{ site.baseurl }}/public/images/api-metrics-p99.png" alt="api-metrics-p99" class="blog-image">
+- Firstly, for monitoring had integrated OTel telemetry metrics, and monitored critical functions used in API flow and checked which functions were taking most time to run. Also ensured OTel is not blocking main thread, rather running in background - by load testing before/after OTel integration on staging env. 
 - Increased load on the service i.e increasing ALBRequestCountPerTarget from 120 to 600 step by step and monitoring -> Not sure why did increasing load optimized rsponse time? Probably because of service warming up better? 
 - Decreased ECS task instances autoscaling limit from 4-70 to 4-30 as well as increasing scaling up/down time -> I think this helped ensure service is not frequently spinning up/down services as they too take time to get worked up when new task gets added, hence sustaining some load and if load is continuous for longer time then only scale up/down. As well as, changed ALB traffic routing to round robin (earlier it was different option) 
 - Cleaning up various parts of application code using singleton classes. 
@@ -24,12 +23,13 @@ Crisp points on things that worked bring down p99 of the API from 150'ish ms to 
 - Other application code changes: Used set{} than list[] in places which hold related data - so that access pattern is optimized (o(1) avg case). Segregated evaluation logic based on common attributes in rules, so that lesser rules are evaluated for related type of user request. Also if boundary conditions were breached, we exited quicker rather than running whole evaluation (basically tightened base conditions). Updated rules having NOT condition with help of previously segregated flow. We used expressions in rules, which were substituted with values used for evaluation with help of Template() library - internally it used Abstract Syntax Tree as seen, for ingredients used in rules - Unnecessary/redundant ingredients were trimmed down, so that internally the AST formed is smaller during evaluations. Each rule's evaluation time was also benchmarked via time perf_counter functions. Etc. 
 - Snapshots:
   - Rule evaluation(s): 
-
   <img src="{{ site.baseurl }}/public/images/rule_evaluate.png" alt="rule_evaluate pic" class="blog-image">
 
-  - p99/p95/p90 metrics. 
-
+  - p99/p95/p90 metrics on OpenSearch. 
   <img src="{{ site.baseurl }}/public/images/p99-fapi.png" alt="p99 api pic" class="blog-image">
+
+  - p99/p95/p90 metrics for one of the functions on Grafana (OTel)
+  <img src="{{ site.baseurl }}/public/images/api-metrics-p99.png" alt="api-metrics-p99" class="blog-image">
 
 ------------------------------------------------
 
