@@ -8,11 +8,11 @@ title: Videos
 </p>
 
 <ul>
-    <li>
+<!--     <li>
         <a href="https://www.youtube.com/@jarusve" target="_blank">
         Youtube Channel - Jarusve's videos
         </a>
-    </li>
+    </li> -->
     <li>
         <a href="https://www.udemy.com/course/numpyfords/" target="_blank">
         Udemy Course - NumPy for Data Science
