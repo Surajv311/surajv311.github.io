@@ -946,8 +946,8 @@ SingleOutputStreamOperator<ProcessedEvent> joinedStream = eventAMappedStream.key
 -----------------------------------------------------------
 
 For interview preparation and other insights around Spark/Flink, you can follow below PDFs for brushup: 
-- [Spark]({{ site.baseurl }}/public/docs/FlinkTechnicalPrep.pdf)
-- [Flink]({{ site.baseurl }}/public/docs/SparkTechnicalPrep.pdf)
+- [Spark]({{ site.baseurl }}/public/docs/SparkTechnicalPrep.pdf)
+- [Flink]({{ site.baseurl }}/public/docs/FlinkTechnicalPrep.pdf)
 
 
 -----------------------------------------------------------
