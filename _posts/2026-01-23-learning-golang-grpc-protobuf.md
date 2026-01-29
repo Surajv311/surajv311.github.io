@@ -382,7 +382,10 @@ Create go.mod using: `go mod init hello-go`.
 
 go.mod can be imagined as: requirements.txt + project identity + version lock.
 
-Keeping module name same as folder name is best practice, else when you import other packages, you'll have to do an explicit handling. 
+Keeping module name same as folder name is best practice, else when you import other packages, you'll have to do an explicit handling.
+- Go mod or module name you define in command becomes the prefix for all imports inside this project. Hence use proper module name like: `go mod init github.com/X/myproject` therefore `import "github.com/X/myproject/internal/utils"`.
+- Go does not support relative imports (except very special cases you should avoid) like: `import "./utils"`. Note that you could rename the folder, it wouldn't matter, Go builds based on module identity, not folder naming.
+- Hence file in `/Users/X/work/nats-consumer/...` doesn't matter, Go sees it as it's inside `github.com/X/myproject/nats-consumer/...` 
 
 Files: 
 
@@ -405,7 +408,7 @@ func main() {
     sum := mathutils.Add(3, 4)
     fmt.Println("Sum:", sum)
 }
-// Note: Import path = module + folder, and not exactly as folder path. 
+// Note: Import path = (module name initialized) + (folder or relative path from go.mod to the package directory).
 ```
 
 Run program using: `go run .`
