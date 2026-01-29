@@ -355,15 +355,18 @@ Nuances in Go:
   }
   ```
 
-- Functions
+- Functions & Methods
+  - Function: standalone, not tied to any type
+  - Method: function attached to a type (receiver), called on a value.
+  - Methods give behavior to structs; functions are just helpers. (Check eg., below)
   
   ```
-  Normal:
+  Normal function:
   func add(a int, b int) int {
     return a + b
   }
 
-  Multiple returns: 
+  Multiple returns function: 
   func divide(a, b int) (int, error) {
     if b == 0 {
         return 0, errors.New("divide by zero")
@@ -371,7 +374,26 @@ Nuances in Go:
     return a / b, nil
   }
 
-  // Structs, Interface, covered in past. 
+  // Structs, Interface, covered in past.
+
+  Methods: To understand this, let's compare it with function:
+  Assume struct:
+  type User struct {
+	  name string
+  }
+  Plain function (NOT attached to anything)
+  func sayHello(a, b int) {
+	  fmt.Println("hello", a, b)
+  }
+  Now, Method (attached to a struct)
+  func (u *User) sayHello(a, b int) {
+  	fmt.Println("hello", u.name, a, b)
+  }
+  (u *User) means: This function is attached to User and operates on a User object.
+  How it becomes accessible: 
+  u := &User{name: "Suraj"}
+  u.sayHello(1, 2)
+  // Even though method receiver is *User, u.sayHello() works, as Go automatically takes care of addresses: (&u).sayHello()  
   ```
 
 ### Phase 2
@@ -387,7 +409,7 @@ hello-go/
     └── add.go
 ```
 
-Create go.mod using: `go mod init hello-go`.
+Create go.mod using: `go mod init hello-go`. Note for production related projects, consider naming convention like: github.com/XYZCompanyOrName/project
 
 go.mod can be imagined as: requirements.txt + project identity + version lock.
 
@@ -425,6 +447,26 @@ Run program using: `go run .`
 To install third party packages: go get github.com/google/uuid
 
 When you do so, a go.sum file is created (you don’t edit this). It stores checksums, ensures integrity; Can be imagined as pip-lock/poetry.lock file in Python. 
+Version selection happens via go.mod (what versions). Integrity is enforced via go.sum (prove this code hasn’t changed). 
+
+Special folders: 
+- `/internal` named folder -> Can only be imported from within the same module, Prevents accidental external usage.
+- `/cmd` named folder -> Each sub folder = one binary. Etc.
+- Go enforces this at compile time.
+
+Essential Go commands: 
+
+```
+go run .                 # run main package
+go build                 # build binary
+go build ./cmd/consumer  # build specific binary
+go get github.com/google/uuid   # add dependency
+go mod tidy                    # clean unused deps (VERY important)
+go list -m all                 # list modules
+go fmt ./...       # auto-format code
+go vet ./...       # static analysis
+go test ./...      # run all tests
+```
 
 ### Phase 3
 
