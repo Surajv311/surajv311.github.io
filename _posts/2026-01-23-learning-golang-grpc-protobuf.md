@@ -69,7 +69,7 @@ Nuances in Go:
   ```
 - No semicolons (mostly) to end code in line. Go takes care of it. Eg: `var x int = 10 is fine, no need for var x int = 10;`. 
 - Explicit conversions must be done if required in values. Eg: `var y float64 = float64(x)`.
-- if / for / switch need no parentheses
+- if / for / switch need no parentheses.
 - Only ONE loop keyword: for. No while, no do-while.
 - Functions can return multiple values.
 
