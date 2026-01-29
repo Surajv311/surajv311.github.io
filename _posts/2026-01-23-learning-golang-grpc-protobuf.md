@@ -211,7 +211,7 @@ Nuances in Go:
   var name1, name2 string
   var age int
   var isAdmin bool
-  name = "foo"
+  name1 = "foo"
   name2 = "bar"
   age = 25
   isAdmin = false
