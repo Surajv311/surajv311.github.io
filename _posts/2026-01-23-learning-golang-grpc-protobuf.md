@@ -175,6 +175,15 @@ Nuances in Go:
     func (u *User) Greet() string {
         return "Hi " + u.name
     }
+  
+    > Creating a User value (without pointers) can be done like: u := User{name: "Suraj"}.
+    > Now, coming back to our pointer OOP example:
+       User{name: name} → creates a User value.
+       & → takes its address.
+       Result type → *User (pointer to User).
+       Memory picture: 0x1000 ─▶ User{name: "Suraj"}.
+    > In the (u *User) the receiver function, u is a pointer, u.name automatically dereferences the pointer (Go does this for you, else you would've to write like: (*u).name)
+    > There is no separate “address type”. The only way to represent an address is with a pointer type (*User). Go does NOT allow raw memory addresses like C: return 0x7ffeefbff5a8; Only return &User{name: "Suraj"}. Can imagine as pointer types being safe abstraction over addresses.
     ```  
 
 ### Phase 1
