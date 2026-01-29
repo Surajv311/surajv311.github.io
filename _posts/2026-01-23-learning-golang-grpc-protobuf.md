@@ -129,10 +129,10 @@ Nuances in Go:
   var s []int // dynamic - slice
 
   Note:
-  1. nil slice ≠ empty slice
-  var s []int     // nil
-  s := []int{}    // empty
-  1. To add elements in slice, eg: s = append(s, "hello")
+  1. nil slice ≠ empty slice. Eg: 
+     var s []int     // nil
+     s := []int{}    // empty
+  2. To add elements in slice, eg: s = append(s, "hello")
   ```
 - Maps must be initialized
   
