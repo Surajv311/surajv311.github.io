@@ -455,10 +455,20 @@ To install third party packages: go get github.com/google/uuid
 When you do so, a go.sum file is created (you don’t edit this). It stores checksums, ensures integrity; Can be imagined as pip-lock/poetry.lock file in Python. 
 Version selection happens via go.mod (what versions). Integrity is enforced via go.sum (prove this code hasn’t changed). 
 
-Special folders: 
-- `/internal` named folder -> Can only be imported from within the same module, Prevents accidental external usage.
-- `/cmd` named folder -> Each sub folder = one binary. Etc.
-- Go enforces this at compile time.
+Key Go Directory Naming Conventions: 
+
+```
+- cmd/: Contains entry points for executable binaries. Each subdirectory (cmd/app1, cmd/app2) acts as a main package, allowing a single repository to generate multiple binaries.
+- internal/: Contains code intended only for this project, enforced by the Go compiler. Code in internal/ cannot be imported by other projects, making it ideal for encapsulated application logic.
+- pkg/: Contains library code designed to be consumed by external applications or other projects, serving as a shared library.
+- api/: Houses API definitions such as Swagger/OpenAPI specs, JSON schemas, or Protocol Buffers.
+- configs/: Stores configuration files or default configuration templates.
+- web/: Holds front-end components, such as static assets, HTML templates, or CSS/JS files.
+- scripts/: Contains build, installation, analysis, or administrative scripts.
+- testdata/: Stores data files required for tests; Go tools automatically ignore this directory during building.
+- vendor/: Contains application dependencies. Although becoming less common with Go modules, it's still a standard directory name for vendored code.
+- test/ (or tests/): Used for system or integration tests, rather than unit tests which usually reside alongside the code. 
+```
 
 Essential Go commands: 
 
