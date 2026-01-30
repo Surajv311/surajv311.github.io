@@ -336,6 +336,12 @@ Nuances in Go:
   for i, v := range nums {
     fmt.Println(i, v)
   }
+  // i=index, v=value
+
+  Run like while loop:
+  for sum < 1000 {
+  	sum += 1 // doubles the value of sum
+  }
 
   If-Else:
   if x > 10 {
