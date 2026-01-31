@@ -489,7 +489,7 @@ go test ./...      # run all tests
 Go - Memory model 
 
 - Memory model
-  - A Go binary compiled for macOS will not run on Windows because binaries are OS- and architecture-specific (like ARM64, x86_64), but Go allows cross-compiling by targeting the desired OS and CPU (like `GOOS=windows GOARCH=amd64 go build`).
+  - A Go binary compiled for macOS will not run on Windows because binaries are OS and architecture-specific (like ARM64, x86_64), but Go allows cross-compiling by targeting the desired OS and CPU (like `GOOS=windows GOARCH=amd64 go build`).
   - Every program uses two main memory regions (both reside in RAM):
     - Stack: Fast, Automatically managed, Function-scoped, Freed when function returns
     - Heap: Slower than stack, Manually (C) or GC-managed (Go/Java/Python), Used when data must live longer
