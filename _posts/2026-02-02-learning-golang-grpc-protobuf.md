@@ -316,7 +316,7 @@ Nuances in Go:
     true    // bool
     "hi"    // string
     'A'     // byte
-    '世'     // rune
+    '世'    // rune
     ```
 
 - Loops/If-Else/Switches
