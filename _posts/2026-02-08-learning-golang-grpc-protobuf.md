@@ -293,7 +293,11 @@ Nuances in Go:
           }
       price := m["apple"]
 
-    Structs ~ 
+    Pointers ~ 
+    > x := 10
+      p := &x   // pointer to x
+
+    Structs ~ Holds data
     > type User struct {
           Name string
           Age  int
@@ -303,12 +307,8 @@ Nuances in Go:
           Age:  25,
       }
       fmt.Println(u.Name) // Capitalized, hence public access from all packages, if lowercase letters named in struct then private access. 
-    
-    Pointers ~ 
-    > x := 10
-      p := &x   // pointer to x
 
-    Interface (behavior, not data) ~
+    Interface (Projects behaviour, unlike struct) ~
     > type Speaker interface {
         Speak() string
       }
@@ -318,6 +318,96 @@ Nuances in Go:
       }
     ```
 
+	- Functions & Methods
+	  - Function: standalone, not tied to any type. Method: function attached to a type (receiver), called on a value.
+	  - Methods give behavior to structs; functions are just helpers. Eg: 
+	  
+	  ```
+	  Normal/Free function:
+	  func add(a int, b int) int {
+	    return a + b
+	  }
+	
+	  Multiple returns function: 
+	  func divide(a, b int) (int, error) {
+	    if b == 0 {
+	        return 0, errors.New("divide by zero")
+	    }
+	    return a / b, nil
+	  }
+		
+	  Methods: Assume a struct, 
+	  type User struct {
+		  name string
+	  }
+	  Plain function (NOT attached to anything): 
+	  	func sayHello(a, b int) {
+		  	fmt.Println("hello", a, b)
+	  	}
+	  Method (attached to a struct): 
+	  	func (u *User) sayHello(a, b int) {
+	  		fmt.Println("hello", u.name, a, b)
+	  	}
+	  (u *User) means:
+      	This function is attached to User and operates on a User object.
+	  How it becomes accessible: 
+	  	u := &User{name: "Suraj"}
+	  	u.sayHello(1, 2) // Even though method receiver is *User, u.sayHello() works, as Go automatically takes care of addresses: (&u).sayHello()
+	  
+      A struct can have multiple behaviors by implementing multiple interfaces.
+      type Flyer interface {
+		 Fly() string
+	  }
+	  type Swimmer interface {
+		 Swim() string
+	  }
+	  type Duck struct {
+		 Name string
+	  }
+	  func (d Duck) Fly() string {
+		 return d.Name + " is flying"
+	  }
+	  func (d *Duck) Swim() string {
+		 return d.Name + " is swimming"
+	  }
+	  func main() {
+		 d := Duck{Name: "Donald"}
+		 var f Flyer = d // Way 1 to do it
+		 var s Swimmer = &d // Way 2 to do it, since go handles pass by reference. Also note we are assigning struct d inside interface Flyer/Swimmer - will learn about it
+		 fmt.Println(f.Fly())
+		 fmt.Println(s.Swim())
+	  }
+   
+	  > Interfaces can only be satisfied by methods, not free functions. 
+Function: 
+func Fly(d Duck) string {
+	return d.Name + " is flying"
+}
+Fly(d)
+func (d Duck) Fly() string {
+	return d.Name + " is flying"
+}
+d.Fly()
+Both are conceptually same, second form enables interface and method sets. 
+
+Value vs Pointer receiver nuance
+| Receiver | Can modify struct | Interface impact                |
+| -------- | ----------------- | ------------------------------- |
+| `Duck`   | ❌ No              | both `Duck` and `*Duck` satisfy |
+| `*Duck`  | ✅ Yes             | only `*Duck` satisfies          |
+
+How can an interface "equal" a struct?
+var f Flyer = d
+An interface value is two things: (interface type, concrete value)
+Hence above one is internally stored as:
+Flyer interface
+└── concrete type: Duck
+└── concrete value: Duck{Name: "Donald"}
+The interface does NOT become the struct
+📌 The struct is stored INSIDE the interface.
+This is different from java / python. 
+	  ```
+  
   - DataTypes:
     
     ```
@@ -369,47 +459,6 @@ Nuances in Go:
     default:
         fmt.Println("Other")
   }
-  ```
-
-- Functions & Methods
-  - Function: standalone, not tied to any type
-  - Method: function attached to a type (receiver), called on a value.
-  - Methods give behavior to structs; functions are just helpers. (Check eg., below)
-  
-  ```
-  Normal function:
-  func add(a int, b int) int {
-    return a + b
-  }
-
-  Multiple returns function: 
-  func divide(a, b int) (int, error) {
-    if b == 0 {
-        return 0, errors.New("divide by zero")
-    }
-    return a / b, nil
-  }
-
-  // Structs, Interface, covered in past.
-
-  Methods: To understand this, let's compare it with function:
-  Assume struct:
-  type User struct {
-	  name string
-  }
-  Plain function (NOT attached to anything)
-  func sayHello(a, b int) {
-	  fmt.Println("hello", a, b)
-  }
-  Now, Method (attached to a struct)
-  func (u *User) sayHello(a, b int) {
-  	fmt.Println("hello", u.name, a, b)
-  }
-  (u *User) means: This function is attached to User and operates on a User object.
-  How it becomes accessible: 
-  u := &User{name: "Suraj"}
-  u.sayHello(1, 2)
-  // Even though method receiver is *User, u.sayHello() works, as Go automatically takes care of addresses: (&u).sayHello()  
   ```
 
 ### Phase 2
