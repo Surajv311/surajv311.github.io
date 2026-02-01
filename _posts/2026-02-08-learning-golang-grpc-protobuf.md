@@ -973,8 +973,6 @@ Go - Concurrency
 			<-jobs         // ❌ compile-time error
 		  }
           ```
-       
-            
 
     - Blocking Rules: 
       - Unbuffered Channel `ch := make(chan int)`: Send and Receive must happen at the same time like a handshake. Synchronization first, data second. If you send, but no receiver then its blocked (pending state), vice versa. Ex:
