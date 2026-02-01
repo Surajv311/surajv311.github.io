@@ -963,6 +963,18 @@ Go - Concurrency
             ok == false → channel is closed
             v → zero value
             ```
+            
+        - Channel Ownership:
+		  
+          ```
+          // Compiler enforces ownership rules. You can restrict direction when passing a channel, but you cannot widen it again. Depending your use case, you may use bi-directional channel or restrict it 
+		  func produceJobs(jobs chan<- int, n int) {
+		    jobs <- 1      // ✅ allowed
+			<-jobs         // ❌ compile-time error
+		  }
+          ```
+       
+            
 
     - Blocking Rules: 
       - Unbuffered Channel `ch := make(chan int)`: Send and Receive must happen at the same time like a handshake. Synchronization first, data second. If you send, but no receiver then its blocked (pending state), vice versa. Ex:
