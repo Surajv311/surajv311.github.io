@@ -133,7 +133,16 @@ Nuances in Go:
      var s []int     // nil
      s := []int{}    // empty
   2. To add elements in slice, eg: s = append(s, "hello")
+  3. Conversions:
+       Array to Slice:
+         a := [5]int{1, 2, 3, 4, 5}
+         s := a[:] // Could also have partial slice [1:4]
+       Slice to Array
+         s := []int{1, 2, 3, 4, 5}
+         var a [5]int
+         copy(a[:], s)
   ```
+
 - Maps must be initialized
   
   ```
@@ -141,6 +150,7 @@ Nuances in Go:
   Doing: m["a"] = 1 // Wrong
   Rather: m := make(map[string]int)
   ```
+  
   Note: 
 
   | new                | make                    |
