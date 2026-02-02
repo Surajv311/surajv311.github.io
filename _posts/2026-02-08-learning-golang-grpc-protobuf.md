@@ -122,6 +122,8 @@ Nuances in Go:
     *int guarantees dereferencing gives an int ~ Type safety (prevents invalid memory access)
     ```
 
+	- Interesting [read on pointers](https://stackoverflow.com/questions/64235422/are-there-differences-between-int-pointer-and-char-pointer-in-c).
+
 - Arrays vs slices: Arrays are fixed, Slices in Go are dynamic sized (mostly used). 
   
   ```
@@ -557,7 +559,7 @@ go test ./...      # run all tests
 Go - Memory model 
 
 - Memory model
-  - A Go binary compiled for macOS will not run on Windows because binaries are OS and architecture-specific (like ARM64, x86_64), but Go allows cross-compiling by targeting the desired OS and CPU (like `GOOS=windows GOARCH=amd64 go build`).
+  - A Go binary compiled for macOS will not run on Windows because binaries are OS and architecture-specific (like ARM64, x86_64), but Go allows cross-compiling by targeting the desired OS and CPU (like `GOOS=windows GOARCH=amd64 go build`). [Interesting read](https://www.digitalocean.com/community/tutorials/building-go-applications-for-different-operating-systems-and-architectures).
   - Every program uses two main memory regions (both reside in RAM):
     - Stack: Fast, Automatically managed, Function-scoped, Freed when function returns
     - Heap: Slower than stack, Manually (C) or GC-managed (Go/Java/Python), Used when data must live longer
@@ -642,7 +644,7 @@ Go - Memory model
 Go - Error handling 
 
 - Error handling  
-  - defer: schedules a function call to run when the surrounding function returns. It executes in LIFO order. Although, avoid using it in extreme tight loops. 
+  - defer: schedules a function call to run when the surrounding function returns, in other words defer runs after return is executed, but before the function actually exits. It executes in LIFO order. Although, avoid using it in extreme tight loops. Using defer to clean up resources is very common in Go. 
     
     ```
     Eg 1: 
@@ -687,9 +689,9 @@ Go - Error handling
             }()
       ``` 
 
-  - panic & recover: immediately stops normal execution of the current goroutine and begins stack unwinding. It’s a last-resort mechanism for programmer errors or truly unrecoverable states. Only the panicking goroutine unwinds its stack (will learn about this in ex).
+  - panic: immediately stops normal execution of the current goroutine and begins stack unwinding. There are certain operations in Go that automatically return panics and stop the program like indexing an array beyond its capacity, performing type assertions, etc. We can also generate panics of our own using the panic built-in function. It’s a last-resort mechanism for programmer errors or truly unrecoverable states. Only the panicking goroutine unwinds its stack (will learn about this in ex).
     - Deferred functions or other goroutines still run. 
-    - Program crashes unless the panic is 'recovered'. recover() stops stack unwinding and only works inside a deferred function.
+    - Program crashes unless the panic is 'recovered'. `recover()` stops stack unwinding and only works inside a deferred function.
     - Note that if the caller can handle it → return an error. If the program is broken → panic.
       
       ```
@@ -838,6 +840,29 @@ Go - Error handling
         - The Action: You realize the "impossible state" might actually happen in production (e.g., a database record was deleted). You replace panic with return err.
         - The Goal: To move from crashing to communicating.
         - The Outcome: The program remains running. The caller now has the power to log the issue, retry, or show a friendly message to the user.
+
+		```
+      	Another ex: 
+		func main() {
+			divideByZero()
+			fmt.Println("we survived dividing by zero!")
+		
+		}
+		func divideByZero() {
+			defer func() {
+				if err := recover(); err != nil {
+					log.Println("panic occurred:", err)
+				}
+			}()
+			fmt.Println(divide(1, 0))
+		}
+		func divide(a, b int) int {
+			if b == 0 {
+				panic(nil)
+			}
+			return a / b
+		}
+	  	```
 
 ### Phase 5
 
