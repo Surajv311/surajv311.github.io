@@ -377,35 +377,48 @@ Nuances in Go:
 		 fmt.Println(f.Fly())
 		 fmt.Println(s.Swim())
 	  }
-   
-	  > Interfaces can only be satisfied by methods, not free functions. 
-Function: 
-func Fly(d Duck) string {
-	return d.Name + " is flying"
-}
-Fly(d)
-func (d Duck) Fly() string {
-	return d.Name + " is flying"
-}
-d.Fly()
-Both are conceptually same, second form enables interface and method sets. 
-
-Value vs Pointer receiver nuance
-| Receiver | Can modify struct | Interface impact                |
-| -------- | ----------------- | ------------------------------- |
-| `Duck`   | ❌ No              | both `Duck` and `*Duck` satisfy |
-| `*Duck`  | ✅ Yes             | only `*Duck` satisfies          |
-
-How can an interface "equal" a struct?
-var f Flyer = d
-An interface value is two things: (interface type, concrete value)
-Hence above one is internally stored as:
-Flyer interface
-└── concrete type: Duck
-└── concrete value: Duck{Name: "Donald"}
-The interface does NOT become the struct
-📌 The struct is stored INSIDE the interface.
-This is different from java / python. 
+   How can an interface "equal" a struct?
+		var f Flyer = d
+		An interface value is two things: (interface type, concrete value)
+		Hence above one is internally stored as:
+		Flyer interface
+		└── concrete type: Duck
+		└── concrete value: Duck{Name: "Donald"}
+		The interface does NOT become the struct
+		📌 The struct is stored INSIDE the interface.
+		This is different from java / python.
+  
+	  > Interfaces can only be satisfied by methods, not free functions. Consider same above example: 
+		func Fly(d Duck) string {
+			return d.Name + " is flying"
+		}
+		Fly(d)
+		func (d Duck) Fly() string {
+			return d.Name + " is flying"
+		}
+		d.Fly()
+		Both are conceptually same, second form enables interface and method sets. 
+		
+	  > Value vs Pointer receiver nuance; Say the receiver is: 
+  		> d Duck -> It cannot modify struct.
+  		> d *Duck -> It can modify struct.  
+		Another ex:
+  		type Rectangle struct {
+		    width, height int
+		}
+		func (r Rectangle) Area() int { // Define a method for the Rectangle struct using a value receiver
+		    return r.width * r.height
+		}
+		func (r *Rectangle) Scale(factor int) { // Define a method with a pointer receiver to modify the original struct
+		    r.width *= factor
+		    r.height *= factor
+		}
+		func main() {
+		    myRect := Rectangle{width: 10, height: 5} // Create an instance of the struct	    
+		    fmt.Println("Area:", myRect.Area()) // Output: Area: 50
+		    myRect.Scale(2)
+		    fmt.Println("New Width:", myRect.width) // Output: New Width: 20
+		}
 	  ```
   
   - DataTypes:
