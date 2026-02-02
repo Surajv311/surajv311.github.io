@@ -329,6 +329,31 @@ Nuances in Go:
 	  func add(a int, b int) int {
 	    return a + b
 	  }
+
+      Variadic functions: Accepts any number of arguments of the same type. Can be used for multiple arguments or slices.
+	  // Variadic Mode: ...int → becomes []int inside function. Note that only last parameter can be variadic.
+	  func sum(nums ...int) int {
+		  total := 0
+		  for _, n := range nums {
+		      total += n
+		  }
+		  return total
+	  }
+	  sum(1, 2)
+      sum(1, 2, 3)       
+	  sum()           // Valid: nums is a nil slice
+	  s := []int{1, 2, 3, 4} // using slice 
+	  sum(s...)       // Must "unpack" with ...
+      // You could also pass slices normally, eg: 
+	  func sumForSlice(s []int) int { // Type must be []int
+	      total := 0
+	      for _, n := range s {      
+	          total += n
+	      }
+	      return total
+	  }
+	  s2 := []int{1, 2, 3, 4}
+	  sumForSlice(s2) // Pass directly; no unpacking needed   
 	
 	  Multiple returns function: 
 	  func divide(a, b int) (int, error) {
@@ -440,7 +465,7 @@ Nuances in Go:
 
   Infinite loop:
   for {
-    fmt.Println("running")
+	fmt.Println("running")
   }
 
   Loop over slice/map:
@@ -465,11 +490,13 @@ Nuances in Go:
   switch day {
     case "Mon":
         fmt.Println("Start")
-    case "Sun":
+    case "Sun": 
         fmt.Println("Rest")
     default:
         fmt.Println("Other")
   }
+  // Could also give multiple conditions like: case "Sun", "Tues":...
+  // It's same as writing: case day == "Sun" || day == "Sun2":...
   ```
 
 ### Phase 2
