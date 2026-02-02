@@ -1342,7 +1342,7 @@ Go - Concurrency
 
 Miscellaneous stuff in Go
 
-- Testing: 
+- Testing: [Other doc](https://www.digitalocean.com/community/tutorials/how-to-write-unit-tests-in-go-using-go-test-and-the-testing-package)
   
   ```
   func TestAdd(t *testing.T) {
@@ -1423,7 +1423,7 @@ Miscellaneous stuff in Go
   import "log" or "slog"
   ```
 
-- HTTP Calls: [Interesting read](https://www.digitalocean.com/community/tutorials/how-to-make-http-requests-in-go)
+- HTTP API Calls: [Interesting read](https://www.digitalocean.com/community/tutorials/how-to-make-http-requests-in-go)
   
   ```
   Use net/http package. It: 
@@ -1450,7 +1450,7 @@ Miscellaneous stuff in Go
   ```
 
 - Marshalling, sometimes also known as serialization, is the process of transforming program data in memory into a format that can be transmitted or saved elsewhere. The json.Marshal function, then, is used to convert Go data into JSON data.
-- Similarly other things like Interface implementation patterns, Error design patterns, Time related libraries, etc. 
+- Similarly other things like Interface implementation patterns, Error design patterns, [Time related functions](https://www.digitalocean.com/community/tutorials/how-to-use-dates-and-times-in-go), etc. 
 
 ### Phase 7
 
