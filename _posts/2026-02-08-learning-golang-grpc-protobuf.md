@@ -1423,7 +1423,7 @@ Miscellaneous stuff in Go
   import "log" or "slog"
   ```
 
-- HTTP Calls: 
+- HTTP Calls: [Interesting read](https://www.digitalocean.com/community/tutorials/how-to-make-http-requests-in-go)
   
   ```
   Use net/http package. It: 
@@ -1448,6 +1448,8 @@ Miscellaneous stuff in Go
         Timeout: 5 * time.Second,
     }
   ```
+
+- Marshalling, sometimes also known as serialization, is the process of transforming program data in memory into a format that can be transmitted or saved elsewhere. The json.Marshal function, then, is used to convert Go data into JSON data.
 - Similarly other things like Interface implementation patterns, Error design patterns, Time related libraries, etc. 
 
 ### Phase 7
