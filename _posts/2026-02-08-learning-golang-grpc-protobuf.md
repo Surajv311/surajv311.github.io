@@ -377,16 +377,12 @@ Nuances in Go:
 		 fmt.Println(f.Fly())
 		 fmt.Println(s.Swim())
 	  }
-   How can an interface "equal" a struct?
-		var f Flyer = d
-		An interface value is two things: (interface type, concrete value)
-		Hence above one is internally stored as:
+	  How can an interface "equal" a struct?: var f Flyer = d.
+        An interface value is two things: (interface type, concrete value). Hence above one is internally stored as:
 		Flyer interface
 		└── concrete type: Duck
 		└── concrete value: Duck{Name: "Donald"}
-		The interface does NOT become the struct
-		📌 The struct is stored INSIDE the interface.
-		This is different from java / python.
+		The interface does NOT become the struct. The struct is stored INSIDE the interface. This is different from java / python.
   
 	  > Interfaces can only be satisfied by methods, not free functions. Consider same above example: 
 		func Fly(d Duck) string {
@@ -398,7 +394,7 @@ Nuances in Go:
 		}
 		d.Fly()
 		Both are conceptually same, second form enables interface and method sets. 
-		
+
 	  > Value vs Pointer receiver nuance; Say the receiver is: 
   		> d Duck -> It cannot modify struct.
   		> d *Duck -> It can modify struct.  
