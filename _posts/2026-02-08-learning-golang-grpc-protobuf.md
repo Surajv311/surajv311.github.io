@@ -308,7 +308,13 @@ Nuances in Go:
           Name: "suraj",
           Age:  25,
       }
-      fmt.Println(u.Name) // Capitalized, hence public access from all packages, if lowercase letters named in struct then private access. 
+      fmt.Println(u.Name) // Capitalized, hence public access from all packages, if lowercase letters named in struct then private access.
+      > Struct tags: They are defined as key-value pairs enclosed in backticks `` immediately following the field declaration. They are small pieces of metadata. They are ignored by normal Go code execution but are highly useful for tasks like data serialization, database mapping, and validation - which third-party libraries leverage, like Viper. Ex: 
+		type User struct {
+			Name     string `json:"user_name" db:"name,unique"`
+			Age      int    `json:"age,omitempty"`
+			Password string `json:"-"`
+		}
 
     Interface (Projects behaviour, unlike struct) ~
     > type Speaker interface {
