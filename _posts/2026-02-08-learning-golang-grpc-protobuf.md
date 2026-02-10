@@ -452,7 +452,8 @@ Nuances in Go:
 	  ```
   
   - DataTypes:
-    
+    - Note: Use string when you need immutable text representation, such as configuration keys or constant text. Use []byte for mutable data sequences, file/network I/O, binary encoding/decoding, or when performance is critical and avoiding allocations is necessary.  	
+
     ```
     10      // int, we do have int8, int64, uint/uint8... - unsigned int which has positive values, etc... 
     3.14    // float64
