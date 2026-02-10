@@ -294,6 +294,7 @@ Nuances in Go:
             "banana": 20,
           }
       price := m["apple"]
+      // Note: map[string]interface{} - A map whose key is a string and whose value can be ANY type (int, float64, slice, etc.). Often used. 
 
     Pointers ~ 
     > x := 10
