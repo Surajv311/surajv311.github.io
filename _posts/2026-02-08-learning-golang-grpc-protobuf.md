@@ -162,7 +162,7 @@ Nuances in Go:
   | rarely used        | commonly used           |
 
 
-- func init() in Go is a special function that runs automatically during a package's initialization, before any other functions in the package are called, including main(). It's used for setup and configuration tasks. 
+- func init() in Go is a special function that runs automatically during a package's initialization, before any other functions in the package are called, including main(). It's used for setup and configuration tasks.
 - No function overloading or hardcore OOPs kind of concept in Go. 
   
   ```
@@ -294,6 +294,7 @@ Nuances in Go:
             "banana": 20,
           }
       price := m["apple"]
+      // Note: map[string]interface{} - A map whose key is a string and whose value can be ANY type (int, float64, slice, etc.). Often used. 
 
     Pointers ~ 
     > x := 10
@@ -451,7 +452,8 @@ Nuances in Go:
 	  ```
   
   - DataTypes:
-    
+    - Note: Use string when you need immutable text representation, such as configuration keys or constant text. Use []byte for mutable data sequences, file/network I/O, binary encoding/decoding, or when performance is critical and avoiding allocations is necessary.  	
+
     ```
     10      // int, we do have int8, int64, uint/uint8... - unsigned int which has positive values, etc... 
     3.14    // float64
@@ -1456,6 +1458,54 @@ Miscellaneous stuff in Go
   ```
 
 - Marshalling, sometimes also known as serialization, is the process of transforming program data in memory into a format that can be transmitted or saved elsewhere. The json.Marshal function, then, is used to convert Go data into JSON data.
+- Reflection in Go: Go is a strictly typed language. Usually, the Go compiler acts like a strict bouncer at a club: if it doesn't know exactly who you are (your type) and what you are carrying (your value) before the program even runs, it won't let you in. Reflection is an X-ray machine. It allows your program to accept a "mystery box" (an any / empty interface) while the program is already running, X-ray it, and ask: "What kind of data are you?" (Type), "What is inside you?" (Value).
+  - Imagine you are writing a function that converts any Go struct into JSON format (just like json.Marshal does). The Problem Without Reflection: You would have to write a custom JSON converter for every single struct in your app, because Go demands to know the exact type. 	
+    ```
+    func UserToJson(u User) string { ... }
+    func OrderToJson(o Order) string { ... }
+    func ProductToJson(p Product) string { ... }
+    ```
+  - The Solution With Reflection: You write one generic function that accepts an empty interface (any). When a struct is passed in, reflection "X-rays" it, dynamically loops through whatever fields it finds, and builds the JSON string on the fly.
+    ```
+	func AnythingToJson(mysteryBox any) string { 
+    // 1. Use reflection to see what's inside the mystery box
+    // 2. Dynamically loop through the fields (Name, Age, Price, etc.)
+    // 3. Turn it into a JSON string
+	}
+    ```
+  - Takeaway: We use reflection to build universal tools (JSON serializers, Database ORMs, Logging tools) that can handle any data type we throw at them, without needing to know what that data type is when we write the code. When you pass your "mystery box" into the reflect package, it splits the X-ray into two specific tools:
+
+    | Tool               | What it tells you | Example Question it Answers |
+	|--------------------|------------------|-----------------------------|
+	| `reflect.TypeOf()` | The Blueprint    | "Are you an integer or a struct? If you are a struct, what are your field names?" |
+	| `reflect.ValueOf()`| The Actual Data  | "I know you are an integer, but is your number 10 or 42?" |
+
+  - Eg: This function doesn't know what struct it is receiving, but it prints the fields anyway.
+    ```
+    // We have two totally different structs
+	type User struct{ Name string; Age int }
+	type Product struct{ Title string; Price float64 }
+	// A universal function that accepts ANYTHING
+	func PrintAnyStruct(mysteryBox any) {
+		// X-ray the box to get its blueprint and data
+		blueprint := reflect.TypeOf(mysteryBox)
+		data := reflect.ValueOf(mysteryBox)
+		fmt.Printf("--- Inspecting: %s ---\n", blueprint.Name())
+		// Dynamically loop through however many fields it has!
+		for i := 0; i < blueprint.NumField(); i++ {
+			fieldName := blueprint.Field(i).Name
+			fieldData := data.Field(i).Interface()
+			fmt.Printf("%s: %v\n", fieldName, fieldData)
+		}
+	}
+	func main() {
+		PrintAnyStruct(User{Name: "Alice", Age: 30})
+		PrintAnyStruct(Product{Title: "Laptop", Price: 999.99})
+	}
+    ``` 
+  - Nuances:
+    - It’s Slow: X-raying boxes at runtime takes extra processing power. Regular Go code is compiled and lightning-fast; reflection code is evaluated on the fly and is much slower.
+    - It’s Unsafe: The compiler can't protect you. If you use reflection to try and extract a string out of a box that actually contains an int, your entire app will panic and crash.
 - Similarly other things like Interface implementation patterns, Error design patterns, [Time related functions](https://www.digitalocean.com/community/tutorials/how-to-use-dates-and-times-in-go), etc. 
 
 ### Phase 7
