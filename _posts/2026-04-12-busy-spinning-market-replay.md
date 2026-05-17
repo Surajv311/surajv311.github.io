@@ -1,6 +1,6 @@
 ---
 layout: post 
-title: Busy Spinning for High-Precision Market Replay in Go
+title: Busy Spinning for Market Replay Service
 category: technicalArticles
 ---
 
