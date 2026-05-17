@@ -1463,8 +1463,8 @@ Miscellaneous stuff in Go
 Extras - gRPC, Protobuf
 
 1) The Mental Model Shift — REST vs gRPC
-- When you use REST APIs, you think in terms of **resources and URLs**. You call `POST /users` or `GET /orders/123`. The URL is the thing you're targeting, and you manually define every route, handle the HTTP method, parse the JSON body, and write JSON back in the response. You own all of that plumbing.
-- gRPC flips this entirely. You think in terms of **functions (procedures)**. You're not hitting a URL — you're calling a method on a remote object, just like calling a function in your own code. The networking is abstracted away from you.
+- When you use REST APIs, you think in terms of resources and URLs. You call `POST /users` or `GET /orders/123`. The URL is the thing you're targeting, and you manually define every route, handle the HTTP method, parse the JSON body, and write JSON back in the response. You own all of that plumbing.
+- gRPC flips this entirely. You think in terms of functions (procedures). You're not hitting a URL — you're calling a method on a remote object, just like calling a function in your own code. The networking is abstracted away from you.
 - This concept is called **RPC — Remote Procedure Call**. The "remote" part means the function lives on another machine. The "procedure call" part means it feels like a local function to the caller. gRPC is Google's implementation of this idea, built on top of HTTP/2 and Protobuf.
 - So if you're coming from REST and wondering "what URL do I POST to?" — that question becomes irrelevant in gRPC. You just call a method. The framework handles the transport layer entirely.
 
@@ -1479,7 +1479,7 @@ Extras - gRPC, Protobuf
 
 3) What is gRPC and What Does the Name Mean?
 - gRPC stands for **gRPC Remote Procedure Call** — yes, it's recursive, like GNU (GNU's Not Unix). The "g" technically changes with every version of the project and has meant things like "google", "good", "green", and "glorious" at different times. The important part is **RPC — Remote Procedure Call**.
-- gRPC is a **framework** built by Google that lets a program on one computer call a function on another computer as if it were a local function. It uses:
+- gRPC is a framework built by Google that lets a program on one computer call a function on another computer as if it were a local function. It uses:
   - **Protobuf** as the data format and schema system (though JSON is technically possible)
   - **HTTP/2** as the transport layer (not HTTP/1.1)
   - **Generated code** on both the client and server to handle all communication automatically
@@ -1510,52 +1510,42 @@ Extras - gRPC, Protobuf
 	service Greeter {
 	  rpc SayHello (HelloRequest) returns (HelloReply) {}
 	  //  ^ method name  ^ input message type  ^ output message type
-	  
 	  rpc SayGoodbye (GoodbyeRequest) returns (GoodbyeReply) {}
 	}
 	
 	// A "message" is like a struct or class — it defines the shape of a request or response.
 	message HelloRequest {
 	  string name = 1;
-	
 	  // The "= 1" is a FIELD NUMBER, not a default value.
 	  // Field numbers are the real identifiers used on the wire.
-	
 	  // JSON sends field names repeatedly:
 	  // { "name": "Alice" }
-	
 	  // Protobuf instead sends:
 	  // [field_number + wire_type] + [value bytes]
-	
 	  // For this field:
 	  // string name = 1;
-	  //
 	  // if:
 	  // name = "Alice"
-	
 	  // the binary payload becomes roughly:
 	  // 0A 05 41 6C 69 63 65
-	
 	  // Where:
 	  // 0A -> field number 1 + wire type for length-delimited data
 	  // 05 -> string length (5 bytes)
 	  // 41 6C 69 63 65 -> ASCII bytes for "Alice"
-	
 	  // Notice:
 	  // the string "name" never appears on the wire at all.
-	
 	  // This is one reason protobuf messages are much smaller
 	  // and faster to parse than JSON.
 	}
-	
+ 
 	message HelloReply {
 	  string message = 1;
 	}
-	
+ 
 	message GoodbyeRequest {
 	  string name = 1;
 	}
-	
+ 
 	message GoodbyeReply {
 	  string message = 1;
 	}
@@ -1565,7 +1555,6 @@ Extras - gRPC, Protobuf
 
 
 6) Code Generation — The Magic Step
-
 - Once you have your `.proto` file, you run the `protoc` compiler on it. This is what "code generation" means — protoc reads your schema and writes real, working code in your chosen language.
 
 	```bash
@@ -1576,8 +1565,8 @@ Extras - gRPC, Protobuf
 	protoc --go_out=. --go-grpc_out=. greeter.proto
 	```
 - This generates two files (in Python's case):
-  - **`greeter_pb2.py`** contains the Python classes for your messages — `HelloRequest`, `HelloReply`, `GoodbyeRequest`, `GoodbyeReply`. These classes have the serialization and deserialization logic baked in. You never write these by hand.
-  - **`greeter_pb2_grpc.py`** contains two things. First, a **Stub class** for the client — this is the "remote control" object that has `SayHello()` and `SayGoodbye()` as methods you can call. Second, a **Servicer base class** for the server — this is the class you inherit from and implement with your business logic.
+  - `greeter_pb2.py` contains the Python classes for your messages — `HelloRequest`, `HelloReply`, `GoodbyeRequest`, `GoodbyeReply`. These classes have the serialization and deserialization logic baked in. You never write these by hand.
+  - `greeter_pb2_grpc.py` contains two things. First, a Stub class for the client — this is the "remote control" object that has `SayHello()` and `SayGoodbye()` as methods you can call. Second, a Servicer base class for the server — this is the class you inherit from and implement with your business logic.
 - This is the "function generation" aspect of Protobuf. You defined `SayHello` in the `.proto` file, and now you have a real Python method `stub.SayHello(...)` to call without writing any of that infrastructure yourself.
 - What gRPC generates for you: client stubs, server interfaces, serialization/deserialization logic, transport plumbing.
 - What it does NOT generate: business logic, database access, validation rules, authorization, caching, observability. You still write the actual application behavior yourself.
@@ -1603,35 +1592,28 @@ Extras - gRPC, Protobuf
 	import greeter_pb2        # generated message classes (HelloRequest, HelloReply, etc.)
 	import greeter_pb2_grpc   # generated service classes (Servicer base class)
 	from concurrent import futures
-	
 	# You inherit from the generated Servicer base class and implement each method.
 	# This is YOUR business logic — the generated code handles all the networking.
 	class GreeterServicer(greeter_pb2_grpc.GreeterServicer):
-	    
 	    def SayHello(self, request, context):
 	        # "request" is already a HelloRequest Python object.
 	        # The binary Protobuf bytes were automatically deserialized for you.
 	        # You just work with normal Python objects.
 	        name = request.name  # e.g., "Alice"
-	        
 	        # You return a HelloReply object.
 	        # gRPC automatically serializes this back to binary before sending.
 	        return greeter_pb2.HelloReply(
 	            message=f"Hello, {name}! Welcome to gRPC."
 	        )
-	    
 	    def SayGoodbye(self, request, context):
 	        return greeter_pb2.GoodbyeReply(
 	            message=f"Goodbye, {request.name}. See you soon."
 	        )
-	
 	# Standard boilerplate to start the server
 	server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-	
 	# "Registering" your service is the gRPC equivalent of adding routes.
 	# But notice — you specify NO URLs. gRPC derives the routing from the proto schema.
 	greeter_pb2_grpc.add_GreeterServicer_to_server(GreeterServicer(), server)
-	
 	server.add_insecure_port('[::]:50051')  # listen on port 50051
 	server.start()
 	server.wait_for_termination()
@@ -1649,22 +1631,17 @@ Extras - gRPC, Protobuf
 	import grpc
 	import greeter_pb2
 	import greeter_pb2_grpc
-	
 	# Step 1: Open a connection to the server (equivalent of creating an HTTP session)
 	channel = grpc.insecure_channel('localhost:50051')
-	
 	# Step 2: Create a Stub — this is your "remote control" object.
 	# It has SayHello() and SayGoodbye() as real callable methods.
 	stub = greeter_pb2_grpc.GreeterStub(channel)
-	
 	# Step 3: Call the remote method exactly like a local function.
 	# Under the hood: creates a HelloRequest, serializes to binary,
 	# sends over HTTP/2, receives binary response, deserializes to HelloReply.
 	# You see none of that — it's all handled by the generated code.
 	response = stub.SayHello(greeter_pb2.HelloRequest(name='Alice'))
-	
 	print(response.message)  # Output: "Hello, Alice! Welcome to gRPC."
-	
 	# Calling a second method is just calling another method — no new config needed
 	farewell = stub.SayGoodbye(greeter_pb2.GoodbyeRequest(name='Alice'))
 	print(farewell.message)  # Output: "Goodbye, Alice. See you soon."
@@ -1674,8 +1651,7 @@ Extras - gRPC, Protobuf
 
 
 9) Where Does the HTTP Request Actually Go?
-
-- This is the question that trips up developers coming from REST: "If there's no URL, where does the request go?": The answer is that gRPC **does** use HTTP/2 under the hood, and there **is** a URL — but it's automatically derived from your proto schema, and you never write it yourself. The pattern is always:
+- This is the question that trips up developers coming from REST: "If there's no URL, where does the request go?": The answer is that gRPC does use HTTP/2 under the hood, and there is a URL — but it's automatically derived from your proto schema, and you never write it yourself. The pattern is always:
 
 	```
 	POST https://<host>:<port>/<PackageName>.<ServiceName>/<MethodName>
