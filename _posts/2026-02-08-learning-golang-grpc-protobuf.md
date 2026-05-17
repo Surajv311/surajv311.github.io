@@ -1667,8 +1667,10 @@ Extras - gRPC, Protobuf
 	server.add_insecure_port('[::]:50051')  # listen on port 50051
 	server.start()
 	server.wait_for_termination()
-
- 	# The `add_GreeterServicer_to_server` call does what `mux.HandleFunc(...)` was doing in REST — but instead of you specifying URL paths, gRPC automatically creates routes from the service and method names in your proto file. In normal application code, you rarely think about URLs, HTTP methods, or JSON parsing directly — the gRPC framework handles most transport concerns automatically.
+ 	# The `add_GreeterServicer_to_server` call does what `mux.HandleFunc(...)` was doing in REST — but instead of
+ 	# you specifying URL paths, gRPC automatically creates routes from the service and method names in your proto file.
+ 	# In normal application code, you rarely think about URLs, HTTP methods, or JSON parsing directly — the gRPC framework handles
+ 	# most transport concerns automatically.
 	```
 
 
