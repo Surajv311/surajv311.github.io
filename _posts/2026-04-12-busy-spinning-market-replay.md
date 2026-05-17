@@ -20,20 +20,16 @@ The inter-tick timing (the delay between consecutive market updates for stocks/F
 
 I will discuss a few learnings related to building high-precision replay engine. 
 
-The Problem: `time.Sleep(5 * time.Millisecond)` Is Not Precise. It guarantees a minimum sleep duration, not an exact wake-up time. The actual wake-up depends on: OS scheduler, timer granularity/resolution, CPU load, runtime scheduling, context switching, power-saving behavior, etc.
+**The Problem**: `time.Sleep(5 * time.Millisecond)` Is Not Precise. It guarantees a minimum sleep duration, not an exact wake-up time. The actual wake-up depends on: OS scheduler, timer granularity/resolution, CPU load, runtime scheduling, context switching, power-saving behavior, etc.
 
-For high-frequency systems like market feeds, this can create timing errors.
-
-Eg:
+For high-frequency systems like market feeds, this can create timing errors. Eg:
 
 ```
 Real market tick gap: 200µs
 Replay gap using Sleep: 1ms
 ```
 
-The replay timing becomes significantly slower than the original market behavior. A replay system must preserve these intervals.
-
-Eg: 
+The replay timing becomes significantly slower than the original market behavior. A replay system must preserve these intervals. Eg: 
 
 | Tick | Timestamp       |
 | ---- | --------------- |
@@ -48,9 +44,7 @@ T2 - T1 = 200µs
 T3 - T2 = 250µs
 ```
 
-The Solution: Busy Spinning. Instead of sleeping, the CPU can continuously check the clock until the desired time arrives. This technique is called busy spinning.
-
-Eg:
+**The Solution**: Busy Spinning. Instead of sleeping, the CPU can continuously check the clock until the desired time arrives. This technique is called busy spinning. Eg:
 
 ```go
 target := time.Now().Add(delta)
@@ -69,11 +63,7 @@ check time
 exit when target reached
 ```
 
-Why Busy Spinning Is Precise: Modern systems implement `time.Now()` very efficiently. 
-
-On Linux, Go uses: `clock_gettime(CLOCK_MONOTONIC)` via vDSO (Virtual Dynamic Shared Object).
-
-This means: No system call, No kernel context switch, Extremely fast execution. Typical cost: ~20–40 nanoseconds. 
+**Why Busy Spinning Is Precise**: Modern systems implement `time.Now()` very efficiently. On Linux, Go uses: `clock_gettime(CLOCK_MONOTONIC)` via vDSO (Virtual Dynamic Shared Object). This means: No system call, No kernel context switch, Extremely fast execution. Typical cost: ~20–40 nanoseconds. 
 
 So if we spin for 500 microseconds (theoretically):
 
@@ -84,11 +74,11 @@ So if we spin for 500 microseconds (theoretically):
 
 The CPU checks the clock roughly 25,000 times, making the wait extremely accurate. Even with busy spinning, perfect determinism is not guaranteed because OS scheduling, goroutine preemption, and GC pauses can still introduce latency. However, it is significantly more precise than relying solely on `time.Sleep()` for sub-millisecond timing.
 
-Downside of Busy Spinning: Busy spinning consumes CPU.
+**Downside of Busy Spinning**: It consumes CPU.
 
-The Hybrid Strategy: Sleep + Spin: A better approach in my use case was to combine both techniques. Strategy: Sleep most of the time; Busy-spin near the target time. 
+**The Hybrid Strategy**: Sleep + Spin: A better approach in my use case was to combine both techniques. Strategy: Sleep most of the time; Busy-spin near the target time. 
 
-This reduces CPU usage while maintaining high precision.
+This reduced CPU usage theoretically, although in practice I did not observe a significant difference in infrastructure metrics, likely because most inter-tick delays were already in the microsecond range.
 
 Below is a simplified version of the approach used in the replay engine I worked on: 
 
@@ -139,3 +129,5 @@ CPU usage occurs only during the final 1ms. This avoids scheduler overshoot whil
 Also (as observed in sample code), instead of repeatedly sleeping for fixed intervals, we compute a target timestamp directly. This avoids cumulative drift, where small scheduling inaccuracies compound over thousands of ticks and eventually drift the replay by seconds.
 
 Busy spinning is appropriate when: Precision below 1ms is required; Timing accuracy matters; Wait durations are short; CPU availability is acceptable. Else time.Sleep() is sufficient.
+
+-----------------
