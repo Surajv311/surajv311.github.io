@@ -33,7 +33,7 @@ on:
     types: [completed]
 
 permissions:
-  contents: write   # needed by the Release job to create tags and releases
+  contents: read
 
 jobs:
   ci-checks:
@@ -105,6 +105,8 @@ jobs:
   # i.e. the new site version is live. Creates tags/releases only; no deploy here.
   release:
     name: Release
+    permissions:
+      contents: write   # needed to create tags and releases
     if: >
       github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'success' &&
