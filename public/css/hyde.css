@@ -31,7 +31,7 @@
  * Update the foundational and global aspects of the page.
  */
 
-/* Computer Modern (CMU Serif), self-hosted in public/fonts. font-display: swap shows text immediately in a fallback font. */
+/* Computer Modern (CMU Serif), hosted locally in public/fonts */
 @font-face {
   font-family: 'CMS';
   src: url('../fonts/cmunrm.woff') format('woff');
