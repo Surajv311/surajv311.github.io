@@ -8,7 +8,7 @@ category: technicalArticles
 
 I worked on an interesting task along with the devops team of cleaning up a bulky legacy Postgres table in the db, which was causing cluster-wide performance degradation (Eg: Auto-vacuum processes were triggering frequently, locking table and impacting writes across the entire database cluster). 
 Example:
-<img src="{{ site.baseurl }}/public/images/auto-vacuum-table-load-increase.png" alt="Auto vacuum table load increase in cluster" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/auto-vacuum-table-load-increase.png" alt="Auto vacuum table load increase in cluster" class="blog-image" loading="lazy">
 The table was loaded with real-time data from a Kafka consumer running round the clock.
 It had over ~ 1.6B rows having roughly a month of data; ~ 600GB total size; Of which indexes size ~ 125GB, toast size ~ 125GB. A daily batch job was running to delete data older than 30 days. Command which it used: `DELETE FROM <tableNameX> WHERE created_at < '<current_time_minus_thirty_days>'` on the writer postgres instance - and this is not an effective command (discussed later)
 
@@ -177,6 +177,6 @@ Crisp points learned & strategy:
     - pg_partman is superior
 
 Impact: Decrease in load (blue)
-<img src="{{ site.baseurl }}/public/images/table-load-decrease-later.png" alt="Decreased cluster load after activity - blue chunk in graph" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/table-load-decrease-later.png" alt="Decreased cluster load after activity - blue chunk in graph" class="blog-image" loading="lazy">
 
 ------------------------------------------------

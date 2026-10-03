@@ -11,12 +11,19 @@ tagline:          Engineering
 description:      Software Engineer | Learning stuff...
 url:              https://surajv311.github.io
 baseurl:          ""
+lang:             en-US
+logo:             /public/surajverma.png
+image:            /public/surajverma.png
 
 author:
   name:           'Suraj Verma'
   url:            https://in.linkedin.com/in/surajverma-sv
 
-paginate:         5
+social:
+  name:           Suraj Verma
+  links:
+    - https://in.linkedin.com/in/surajverma-sv
+    - https://github.com/Surajv311
 
 # Custom vars
 version:          1.1.11
@@ -26,6 +33,6 @@ github:
 
 # Plugins
 plugins:
-  - jekyll-paginate
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap

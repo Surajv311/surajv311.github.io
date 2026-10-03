@@ -12,7 +12,7 @@ In this article, I have jotted down my understanding around Spark and Flink.
 
 Basic Architecture: 
 
-<img src="{{ site.baseurl }}/public/images/basic-arch-spark.png" alt="Basic spark architecture" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/basic-arch-spark.png" alt="Basic spark architecture" class="blog-image" loading="lazy">
 (Image source: [ref](https://npntraining.medium.com/apache-spark-architecture-9f3fdeffed9c))
 
 Apache Spark is an open-source distributed computing system designed for big data processing and analytics. Spark is known for its speed and efficiency. Spark enables applications to run faster by utilising in-memory cluster computing.
@@ -34,17 +34,17 @@ Executors: They are worker nodes that execute tasks assigned by the driver. Each
 Related snapshots from a real system: 
 
 Configs of cluster: 
-<img src="{{ site.baseurl }}/public/images/cluster-configs.png" alt="Databricks Spark cluster configs" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/cluster-configs.png" alt="Databricks Spark cluster configs" class="blog-image" loading="lazy">
 
 Appearance of jobs when running a spark code: 
-<img src="{{ site.baseurl }}/public/images/spark-jobs-1.png" alt="spark-jobs-1" class="blog-image">
-<img src="{{ site.baseurl }}/public/images/spark-jobs-2.png" alt="spark-jobs-2" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/spark-jobs-1.png" alt="spark-jobs-1" class="blog-image" loading="lazy">
+<img src="{{ site.baseurl }}/public/images/spark-jobs-2.png" alt="spark-jobs-2" class="blog-image" loading="lazy">
 
 Stages of a Spark job:  
-<img src="{{ site.baseurl }}/public/images/spark-job-stages.png" alt="spark-job-stages" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/spark-job-stages.png" alt="spark-job-stages" class="blog-image" loading="lazy">
 
 Worker information when running a code:  
-<img src="{{ site.baseurl }}/public/images/spark-executors.png" alt="spark-executors" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/spark-executors.png" alt="spark-executors" class="blog-image" loading="lazy">
 
 Cluster Manager: It is responsible for managing resources across the cluster. It allocates resources to different applications and manages their lifecycle. Common cluster managers used with Spark include:
 - Standalone Cluster Manager: A simple built-in manager that comes with Spark.
@@ -124,7 +124,7 @@ Hardware Level Configuration:
 
 Basic Architecture (More snapshots of actual pipelines below): 
 
-<img src="{{ site.baseurl }}/public/images/flink-arch.png" alt="flink-arch" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/flink-arch.png" alt="flink-arch" class="blog-image" loading="lazy">
 (Image source: [ref](https://alibaba-cloud.medium.com/apache-flink-fundamentals-building-a-development-environment-and-configure-deploy-and-run-459b9067e8e3))
 
 Job Manager: It is the master component responsible for coordinating the execution of jobs. It handles job submission, manages task scheduling and distribution across Task Managers, coordinates checkpoints and recovery in case of failures, and resource management. 
@@ -213,8 +213,8 @@ Job Manager: It is the master component responsible for coordinating the executi
       - In application code env.setParallelism() at global level: Not set
       - Say you use 3 operators - total parallelism would be 7*3 -> 21. 
       - Total task managers created by flink would be: 7/13 = 1. Least number of task managers to spin up is 1. 
-        <img src="{{ site.baseurl }}/public/images/flink-ui1.png" alt="flink-ui1" class="blog-image">
-        <img src="{{ site.baseurl }}/public/images/flink-ui2.png" alt="flink-ui2" class="blog-image">
+        <img src="{{ site.baseurl }}/public/images/flink-ui1.png" alt="flink-ui1" class="blog-image" loading="lazy">
+        <img src="{{ site.baseurl }}/public/images/flink-ui2.png" alt="flink-ui2" class="blog-image" loading="lazy">
     - Number of task managers spinned up in a flink pipeline = Parallelism / Total task slots.
     - Case 2:
       - In eks config: taskmanager.numberOfTaskSlots: "2" and job: parallelism: 8
@@ -225,8 +225,8 @@ Job Manager: It is the master component responsible for coordinating the executi
       - In eks config: taskmanager.numberOfTaskSlots: "13" and job: parallelism: 7
       - In application code env.setParallelism() at global level: 91
       - Observe, global level parallelism is 91. It picks up parallelism defined here rather than the eks config which is 7 and applies to all 3 operators as you see, it takes precedence. Similarly, task slots is 13, and since parallelism is 91, total task managers spawned up would be 91/13 ~ 7. So 7 task managers each having 13 task slots contribute to the overall defined parallelism of 91. There are total 273 tasks running because, 3 operators each with parallelism 91 ~ 91*3 = 273. It means, inside 1 task slot, 3 tasks are running - so each operator is running 1 task (we have 3 operators in action as seen). 
-      <img src="{{ site.baseurl }}/public/images/flink-ui3.png" alt="flink-ui3" class="blog-image">
-      <img src="{{ site.baseurl }}/public/images/flink-ui4.png" alt="flink-ui4" class="blog-image">
+      <img src="{{ site.baseurl }}/public/images/flink-ui3.png" alt="flink-ui3" class="blog-image" loading="lazy">
+      <img src="{{ site.baseurl }}/public/images/flink-ui4.png" alt="flink-ui4" class="blog-image" loading="lazy">
       - In above pic, the pipeline is in failed state (red colour status in pic) probably because the underlying infra in the cluster is not able to support or provide for the given configuration. To fix it, one has to scale up the infra in cluster as well to support it, else tweak the configurations in code.  For example: If each task manager has a config requirement defined as: taskManager: resource: memory: "2048m" cpu: 1; Then if 7 task managers are spinned up, then underlying machines should have the required infra. Also note scaling is 1 part, underlying infra should also be there in the fleet of machines/cluster to support the scaling.
     - How to decide parallelism in flink?: Ideally you set the parallelism to the number of slots you have in your cluster. Another example: Imagine you are choosing between a parallelism of 50 with 2 cores per slot, or a parallelism of 100 with 1 core per slot. In both cases the same resources are available -- which will perform better?: One can expect fewer slots with more cores per slot to perform somewhat better, in general, provided there are enough tasks/threads per slot to keep cores busy (if the whole pipeline fits into one task this might not be true, though deserializers can also run in their own thread). With fewer slots you'll have more keys and key groups per slot, which will help to avoid data skew, and with fewer tasks, checkpointing (if enabled) will be a bit better behaved. Inter-process communication is also a little more likely to be able to take an optimized (in-memory) path.
     - Useful: [ref](https://stackoverflow.com/questions/72345290/intuition-for-setting-appropriate-parallelism-of-operators-in-flink), [ref2](https://stackoverflow.com/questions/50719147/apache-flink-guideliness-for-setting-parallelism), [ref3](https://stackoverflow.com/questions/56222665/how-does-the-flink-optimizer-decide-on-parallelism)
@@ -234,7 +234,7 @@ Job Manager: It is the master component responsible for coordinating the executi
   - Check pointing is Flink's backbone for providing consistent fault tolerance. It keeps on taking consistent snapshots for distributed data streams and executor states. It is inspired by the Chandy-Lamport algorithm but has been modified for Flink's tailored requirement. Flink supports stateful computations where operators maintain state across events.
   - The fault-tolerant mechanism keeps on creating lightweight snapshots for the data flows. They therefore continue the functionality without any significant over-burden. Generally the state of the data flow is kept in a configured place such as HDFS. In case of any failure, Flink stops the executors and resets them and starts executing from the latest available checkpoint.
   - Stream barriers are core elements of Flink's snapshots. They are ingested into data streams without affecting the flow. Barriers never overtake the records. They group sets of records into a snapshot. Each barrier carries a unique ID. The following diagram shows how the barriers are injected into the data stream for snapshots:
-    <img src="{{ site.baseurl }}/public/images/checkpointing-flink.png" alt="checkpointing-flink" class="blog-image">
+    <img src="{{ site.baseurl }}/public/images/checkpointing-flink.png" alt="checkpointing-flink" class="blog-image" loading="lazy">
     (Source: [ref](https://medium.com/@akash.d.goel/apache-flink-series-part-6-4ef9ad38e051))
   - Each snapshot state is reported to the Flink Job Manager's checkpoint coordinator. While drawing snapshots, Flink handles the alignment of records in order to avoid re-processing the same records because of any failure. This alignment generally takes some milliseconds. But for some intense applications, where even millisecond latency is not acceptable, we have an option to choose low latency over exactly a single record processing. By default, Flink processes each record exactly once. If any application needs low latency and is fine with at least a single delivery, we can switch off that trigger. This will skip the alignment and will improve the latency.
 - Resource Manager: The Resource Manager oversees resource allocation across the cluster, ensuring that Task Managers have enough resources to execute their tasks effectively.
@@ -248,7 +248,7 @@ Job Manager: It is the master component responsible for coordinating the executi
     - They both involve redistributing data across partitions but do so in different ways and for different purposes. When operations like keyBy(), shuffle(), or rebalance() are encountered, Flink performs network shuffling to redistribute data between tasks.
     - Useful: [ref](https://stackoverflow.com/questions/43956510/difference-between-shuffle-and-rebalance-in-apache-flink), [ref2](https://stackoverflow.com/questions/46464417/the-strategy-of-apache-flink-shuffle-is-it-like-shuffle-in-hadoop?rq=3)
 - Flink Deployment in EKS: In summary; 
-  <img src="{{ site.baseurl }}/public/images/flink-eks-deployment.png" alt="flink-eks-deployment.png" class="blog-image">
+  <img src="{{ site.baseurl }}/public/images/flink-eks-deployment.png" alt="flink-eks-deployment.png" class="blog-image" loading="lazy">
   (Source: [ref](https://awslabs.github.io/data-on-eks/docs/blueprints/streaming-platforms/flink))
 - At Simpl: Historically, we had on-demand EC2 machines, running flink pipelines (JobManager, TaskManagers, etc.). It was a shared cluster. As number of pipelines started to increase it was observed that there were issues, like if one pipeline consumes more resources, other pipelines were effected. 
   - More details around issues faced in past around this, written here: [ref](https://cgoyal.substack.com/p/building-real-time-efficiency)
@@ -541,7 +541,7 @@ Job Manager: It is the master component responsible for coordinating the executi
       - The watermark advances whenever a new event with a higher timestamp arrives
     - So the frequency of watermark generation depends on how often events with increasing timestamps arrive, not on a fixed 10-second interval.
     - In a Flink stream, watermarks advance through the data flow alongside regular events. The diagram below illustrates how watermarks look in a stream:
-      <img src="{{ site.baseurl }}/public/images/flink-stream-watermarking.png" alt="flink-stream-watermarking.png" class="blog-image">
+      <img src="{{ site.baseurl }}/public/images/flink-stream-watermarking.png" alt="flink-stream-watermarking.png" class="blog-image" loading="lazy">
     - Key Elements in the Diagram:
       - Regular Events (Green): Normal data events with their timestamps (E1, E2, etc.)
       - Watermarks (Orange Lines): Special markers that flow through the stream, indicating "we don't expect any more events with timestamps earlier than this value"

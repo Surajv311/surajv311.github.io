@@ -73,26 +73,26 @@ The event data is later relayed to downstream systems and pipelines that perform
   - Events are segregated into appropriate Kafka topics based on their properties, eg: user related events in one topic, communication related events in another topic, etc.
   - Our Kafka consumers which run on ECS round the clock, consume these published events and store them in Amazon S3 for persistent storage. Based on the recent trends, over 1TB+ JSON data is dumped in S3 comprising of 2M+ individual file objects. These metrics continue to grow as our user base expands and transaction volume increases.
 
-<img src="{{ site.baseurl }}/public/images/kafka-kafdrop.png" alt="kafka-kafdrop" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/kafka-kafdrop.png" alt="kafka-kafdrop" class="blog-image" loading="lazy">
 
 - **Airflow:**
   - We use Apache Airflow as our primary workflow orchestration platform. It runs event parsing jobs performing Extract, Transform, and Load (ETL) operations on the raw event data accumulated in S3.
   - It involves retrieving raw events from S3, parsing and transforming the data according to business rules, and storing the processed data in multiple formats including Parquet and CSV files.
   - Finally, the processed data is loaded into over 400+ tables defined in AWS Redshift or partitioned external tables defined in Databricks.
 
-<img src="{{ site.baseurl }}/public/images/airflow-dag.png" alt="airflow dag" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/airflow-dag.png" alt="airflow dag" class="blog-image" loading="lazy">
 
 - **Databricks:**
   - We use Databricks as our unified analytics platform that serves multiple critical functions in our data ecosystem.
   - As discussed, we define external tables over the processed parquet files and use them to enrich our silver/golden data layer.
 
-<img src="{{ site.baseurl }}/public/images/databricks-workflow.png" alt="databricks-workflow" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/databricks-workflow.png" alt="databricks-workflow" class="blog-image" loading="lazy">
 
 At a 50,000ft view, it may seem like a simple event parsing pipeline, but the same pipeline used to run for over 8Hrs in the past to enrich the silver layer. The team worked upon optimising the entire pipeline and brought down the runtime to an hour.
 
 ### The Past: Legacy Pipeline Architecture
 
-<img src="{{ site.baseurl }}/public/images/old-pipeline.png" alt="old-pipeline" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/old-pipeline.png" alt="old-pipeline" class="blog-image" loading="lazy">
 
 - **Kafka and the Consumer Configuration**
   - Events were published in different Kafka topics. It included events of dissimilar themes as well being published in same topic.
@@ -128,7 +128,7 @@ The complete pipeline required approximately 8 to 9 hours to process a full day'
 
 ### The Present: Optimized Pipeline Architecture
 
-<img src="{{ site.baseurl }}/public/images/current-pipeline.jpg" alt="current pipeline" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/current-pipeline.jpg" alt="current pipeline" class="blog-image" loading="lazy">
 
 We addressed the identified pain points through a pipeline redesign over the time.
 
@@ -136,7 +136,7 @@ We addressed the identified pain points through a pipeline redesign over the tim
   - We cleaned up our Kafka topics with better segregation of similar themed events. This helped in consumers consuming only relevant data from the required topics.
   - We also introduced data enrichment and masking capabilities in our consumer to apply transformation rules and security policies in real-time, handling PII data with care.
 
-<img src="{{ site.baseurl }}/public/images/kafka-consumer-infra.png" alt="kafka-consumer-infra" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/kafka-consumer-infra.png" alt="kafka-consumer-infra" class="blog-image" loading="lazy">
 
   - The revised consumer configuration writes data to S3 when either of two threshold conditions is met:
     - The accumulated event files exceed 10 megabytes in size (or)

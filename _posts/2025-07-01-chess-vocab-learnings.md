@@ -19,13 +19,13 @@ This article is my attempt to focus on the areas mentioned above, where I jot do
 | **Queen**  | ♕ / ♛          | **Q**           | **9**            | Combines the power of rook and bishop: moves any number of squares in any direction                 |
 | **King**   | ♔ / ♚          | **K**           | **∞ (Infinite)** | Moves **1 square** in any direction; most valuable — if checkmated, you lose the game               |
 
-<img src="{{ site.baseurl }}/public/images/chessvocab/chessboard.jpg" alt="chessboard" class="blog-image">
+<img src="{{ site.baseurl }}/public/images/chessvocab/chessboard.jpg" alt="chessboard" class="blog-image" loading="lazy">
 
 Checkmate's:
 - Scholar's mate: 1.e4 e5 2.Qh5 Nc6 3.Bc4 Nf6 4.Qxf7# (checkmate)
-  - <img src="{{ site.baseurl }}/public/images/chessvocab/scholars_mate.png" alt="scholars mate" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/chessvocab/scholars_mate.png" alt="scholars mate" class="blog-image" loading="lazy">
 - Fool's mate: 1.f3 e5 2.g4 Qh4# (checkmate)
-  - <img src="{{ site.baseurl }}/public/images/chessvocab/fools_mate.png" alt="fools mate" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/chessvocab/fools_mate.png" alt="fools mate" class="blog-image" loading="lazy">
 
 Stalemate: ...  
 

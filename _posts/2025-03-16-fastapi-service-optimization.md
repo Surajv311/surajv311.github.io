@@ -23,13 +23,13 @@ Crisp points on things that worked bring down p99 of the API from 150'ish ms to 
 - Other application code changes: Used set{} than list[] in places which hold related data - so that access pattern is optimized (o(1) avg case). Segregated evaluation logic based on common attributes in rules, so that lesser rules are evaluated for related type of user request. Also if boundary conditions were breached, we exited quicker rather than running whole evaluation (basically tightened base conditions). Updated rules having NOT condition with help of previously segregated flow. We used expressions in rules, which were substituted with values used for evaluation with help of Template() library - internally it used Abstract Syntax Tree as seen, for ingredients used in rules - Unnecessary/redundant ingredients were trimmed down, so that internally the AST formed is smaller during evaluations. Each rule's evaluation time was also benchmarked via time perf_counter functions. Etc. 
 - Snapshots:
   - Rule evaluation(s): 
-  <img src="{{ site.baseurl }}/public/images/rule_evaluate.png" alt="rule_evaluate pic" class="blog-image">
+  <img src="{{ site.baseurl }}/public/images/rule_evaluate.png" alt="rule_evaluate pic" class="blog-image" loading="lazy">
 
   - p99/p95/p90 metrics on OpenSearch. 
-  <img src="{{ site.baseurl }}/public/images/p99-fapi.png" alt="p99 api pic" class="blog-image">
+  <img src="{{ site.baseurl }}/public/images/p99-fapi.png" alt="p99 api pic" class="blog-image" loading="lazy">
 
   - p99/p95/p90 metrics for one of the functions on Grafana (OTel)
-  <img src="{{ site.baseurl }}/public/images/api-metrics-p99.png" alt="api-metrics-p99" class="blog-image">
+  <img src="{{ site.baseurl }}/public/images/api-metrics-p99.png" alt="api-metrics-p99" class="blog-image" loading="lazy">
 
 ------------------------------------------------
 

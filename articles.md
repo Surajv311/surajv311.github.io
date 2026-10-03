@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Articles
+description: Technical and non-technical articles by Suraj Verma on data engineering, backend systems, Kafka, Airflow, and more.
 ---
 
 <p class="message">

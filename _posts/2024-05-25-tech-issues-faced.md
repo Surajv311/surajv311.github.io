@@ -12,7 +12,7 @@ I think a lot of my learnings actually came from solving issues.
 
 - Issues with data pipeline(s): 
   - Pipeline 1: As seen below, at a high level it's an event parsing pipeline. Kafka consumers dump data in S3. Since the frequency of dump is high, large number of small sized files are created in near-real-time. While there are other nrt table(s) dependent on these files, for our case, we later compact & dedup these files using a spark job and rewrite them in a path. After compaction, parsing related workflows run to parse the data and dump it in different locations in parquet and CSV format. External tables from Databricks are created on top of parquet files, and the CSV files are used to load in Redshift tables. Redshift/Databricks tables cater different needs of downstream teams. 
-    - <img src="{{ site.baseurl }}/public/images/events-data-pipeline.jpg" alt="Events data pipeline" class="blog-image">
+    - <img src="{{ site.baseurl }}/public/images/current-pipeline.jpg" alt="Events data pipeline" class="blog-image" loading="lazy">
     - Issue fix 1: CSV data to Redshift load job failure due to integer overflow value (Integer valid range -2147483648 to 2147483647) for one of the records in CSV. More details were found in Redshift's inbuilt table: `stl_load_errors`. It was a corrupt data found when deep investigating, removed the record in raw json and re-loaded the flow. We also added a key in the Redshift data load COPY command similar to `IGNOREALLERRORS`, though not ignoring all, we had a limit added, if it would breach it, we would be notified something has failed to load, if its few records, then ignore errors and load anyways. Another issue of similar flavour was observed in later days which was null values in records in CSV: event_timestamp of the null record row: c423b113-5d05-4ae0-a659-8d6ea42ea3e8,,,,,,,,,,,,,,,{}. Similar fix had to be followed.
     - Issue fix 2: Data parsing from Dask failed due to issues around dask schedular not being able to communicate with dask workers. Redeployment of the ecosystem and rerunning the job fixed it. Had it failed again, I would have checked deeper into root cause.  
     - Issue fix 3: VPC endpoint changes made for some systems by infra team, impacted DE workflows. Debugged and fixed issue with them. 
@@ -72,7 +72,7 @@ I think a lot of my learnings actually came from solving issues.
     - Issue fix 12: All task/job logs in Airflow UI disappeared, and were not visible - both current day and earlier day, it was caused due to tinkering/putting bad value in Airflow connections list in the UI. Fixing value there fixed the issue - it was related to a variable having credentials to connect to S3 where logs are persisted.
 
   - Pipeline 2: As seen below, at a high level it's a snapshot batch job pipeline where snapshot/backup of the OLTP Postgres tables is taken everyday and exported to S3, data of it is accessed from different OLAP tables. As running analytical queries on OLTP tables can be heavy. Basically, there is a snapshot scheduled at AWS RDS end for tables everyday. Once the snapshot is ready, there are workflows which export this data.
-    - <img src="{{ site.baseurl }}/public/images/rds-data-pipeline.png" alt="Rds data pipeline" class="blog-image">
+    - <img src="{{ site.baseurl }}/public/images/rds-data-pipeline.png" alt="Rds data pipeline" class="blog-image" loading="lazy">
     - Issue fix 1: There were issues around Redshift load when length of a attribute or column in data record was longer than length defined in table where it was to be loaded or different datatypes in file vs dtype defined in table column, etc. More details were found in Redshift's inbuilt table: `SVL_S3LOG`.
     - Issue fix 2: RDS export requires unique naming for every export. If same name is used - it will yield error: `Error Occurred while starting export task | ExportTaskAlreadyExists`. If for some reason, the export job triggered from Airflow reruns, then issue would stem from it. Although, once export is triggered in RDS, its independent, but still issues may come up. These were fixed by changing name in format and rerunning export: <name_date>. I think could be better if format had been: <name_date_hour_minute>
     - Issue fix 3: Upstream tables in RDS were deprecated, hence when they were exported by the system there was no data causing impact in some of the workflows. Dependency from them was removed. 
@@ -144,7 +144,7 @@ I think a lot of my learnings actually came from solving issues.
         group by u.phone_number, v.approver
         ```
         
-        <img src="{{ site.baseurl }}/public/images/rds-query-optimize.png" alt="RDS query optimize" class="blog-image">
+        <img src="{{ site.baseurl }}/public/images/rds-query-optimize.png" alt="RDS query optimize" class="blog-image" loading="lazy">
 
   - Other pipelines: 
     - Issue fix 1: In one pipeline, we had a sqoop workflow in an EC2 machine, which fetched data from external db's to the machine, and dumped it to S3, meanwhile it would clean-up the in-memory data present after that. Sometimes, the data cleanup would not happen properly bringing down the machine, this was checked and fixed.

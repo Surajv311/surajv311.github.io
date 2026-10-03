@@ -1910,25 +1910,25 @@ We'll cover fundamental analysis ratios that help evaluate a company or financia
   - [Read_Candlestick_Charts_Beginner_Guide - Wysetrade](https://www.youtube.com/watch?v=AOz1YPOKvEs)
   - [Trading_Strategies - DataTrader](https://www.youtube.com/watch?v=ZX-Tp4zgJYc)
 - **Candlestick Patterns**
-  - <img src="{{ site.baseurl }}/public/images/stock-candlesticks.png" alt="candlestick pattern" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/stock-candlesticks.png" alt="candlestick pattern" class="blog-image" loading="lazy">
   - **Single Candle Patterns**:
     - **Doji**: Open equals close, indecision
     - **Hammer**: Long lower wick, potential reversal
     - **Shooting Star**: Long upper wick, bearish reversal
     - **Marubozu**: No wicks, strong directional move
-  - <img src="{{ site.baseurl }}/public/images/single-candlestick.png" alt="single candlestick pattern" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/single-candlestick.png" alt="single candlestick pattern" class="blog-image" loading="lazy">
   - **Double Candle Patterns**:
     - **Bullish Engulfing**: Large green candle engulfs previous red
     - **Bearish Engulfing**: Large red candle engulfs previous green
     - **Piercing Pattern**: Bullish reversal pattern
     - **Dark Cloud Cover**: Bearish reversal pattern
-  - <img src="{{ site.baseurl }}/public/images/double-candlestick.png" alt="double candlestick pattern" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/double-candlestick.png" alt="double candlestick pattern" class="blog-image" loading="lazy">
   - **Triple Candle Patterns**:
     - **Morning Star**: Bullish reversal (three candles)
     - **Evening Star**: Bearish reversal (three candles)
     - **Three White Soldiers**: Strong bullish continuation
     - **Three Black Crows**: Strong bearish continuation
-  - <img src="{{ site.baseurl }}/public/images/triple-candlestick.png" alt="triple candlestick pattern" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/triple-candlestick.png" alt="triple candlestick pattern" class="blog-image" loading="lazy">
   - Reliability increases with volume confirmation
 
 - **Chart Patterns**
@@ -1938,14 +1938,14 @@ We'll cover fundamental analysis ratios that help evaluate a company or financia
     - **Double/Triple Bottoms**: Support holding patterns
     - **Cup and Handle**: Bullish continuation after consolidation
     - **Rounding Bottom/Top**: Gradual trend reversal
-  - <img src="{{ site.baseurl }}/public/images/chart-pattern1.png" alt="chart patterns 1" class="blog-image">
-  - <img src="{{ site.baseurl }}/public/images/chart-pattern2.png" alt="chart patterns 2" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/chart-pattern1.png" alt="chart patterns 1" class="blog-image" loading="lazy">
+  - <img src="{{ site.baseurl }}/public/images/chart-pattern2.png" alt="chart patterns 2" class="blog-image" loading="lazy">
   - **Continuation Patterns**:
     - **Flags**: Brief consolidation in strong trend
     - **Pennants**: Converging trendlines after sharp move
     - **Triangles**: Ascending, descending, or symmetrical
     - **Rectangles**: Horizontal consolidation ranges
-  - <img src="{{ site.baseurl }}/public/images/chart-pattern3.png" alt="chart patterns 3" class="blog-image">
+  - <img src="{{ site.baseurl }}/public/images/chart-pattern3.png" alt="chart patterns 3" class="blog-image" loading="lazy">
   - Pattern reliability improves with:
     - Clear structure and symmetry
     - Volume confirmation at breakout
