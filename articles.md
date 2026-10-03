@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Articles
-description: Technical and non-technical articles by Suraj Verma on backend & data systems, plus history, politics, mythology and other topics of interest.
+description: Technical and non-technical articles by Suraj Verma on computer systems & other topics of interest.
 ---
 
 <p class="message">

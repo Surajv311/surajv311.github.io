@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Videos
-description: Videos and talks by Suraj Verma on software and data engineering.
+description: Videos and talks by Suraj Verma.
 ---
 
 <p class="message">
