@@ -1,6 +1,6 @@
 ---
 layout: post 
-title: Setting up Airflow (and other OSS): Past vs Today
+title: Setting up Airflow (and other OSS) - Past vs Today
 category: technicalArticles
 ---
 
