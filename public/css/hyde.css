@@ -31,35 +31,8 @@
  * Update the foundational and global aspects of the page.
  */
 
-/* Computer Modern (CMU Serif), hosted locally in public/fonts */
-@font-face {
-  font-family: 'CMS';
-  src: url('../fonts/cmunrm.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'CMS';
-  src: url('../fonts/cmunbx.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'CMS';
-  src: url('../fonts/cmunti.woff') format('woff');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'CMS';
-  src: url('../fonts/cmunbi.woff') format('woff');
-  font-weight: bold;
-  font-style: italic;
-  font-display: swap;
-}
+@import url("https://colah.github.io/fonts/Serif/cmun-serif.css");
+@import url("https://colah.github.io/fonts/Serif-Slanted/cmun-serif-slanted.css");
 
 html {
   font-family: 'CMS', 'Droid Sans', Helvetica, Arial, sans-serif; /* Change to your preferred font */
