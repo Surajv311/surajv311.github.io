@@ -3,7 +3,9 @@
 # Handled by THIS workflow:
 #   - CI Checks: YAML lint, post front matter / image reference checks, version validation
 #   - Build:     test build of the site on pull requests (pre-merge safety net)
-#   - Release:   git tag + GitHub release from `version` in _config.yml (push to main only)
+#   - Release:   git tag + GitHub release from `version` in _config.yml. Runs only AFTER
+#                GitHub's Pages deployment finishes successfully (see `workflow_run` below),
+#                so a tag always means the site is live.
 #
 # Handled AUTOMATICALLY by GitHub (not defined here):
 #   - "pages build and deployment" workflow: because Pages source is "Deploy from a branch",
@@ -11,6 +13,12 @@
 #     to main. So this workflow does NOT build or deploy the live site on push to main.
 #   - Caveat: that GitHub-managed workflow runs independently, so a failed check here
 #     does not stop the live deploy. CI Checks/Build mainly protect pull requests.
+#
+# Flow on push to main:
+#   push -> [CI Checks] (this workflow)  +  [pages build and deployment] (GitHub)
+#                                                  |  succeeds
+#                                                  v
+#                                    workflow_run -> [Release] (this workflow)
 
 name: CI/CD
 
@@ -19,6 +27,10 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Fires when GitHub's built-in Pages workflow finishes. Used to release after deploy.
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
 
 permissions:
   contents: write   # needed by the Release job to create tags and releases
@@ -26,9 +38,8 @@ permissions:
 jobs:
   ci-checks:
     name: CI Checks
+    if: github.event_name != 'workflow_run'
     runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.version.outputs.tag }}   # consumed by the Release job
     steps:
       - name: CI Checks | Checkout repository
         uses: actions/checkout@v4
@@ -90,24 +101,41 @@ jobs:
             test -s "_site/$f" || { echo "Missing or empty _site/$f" >&2; exit 1; }
           done
 
-  # Push to main only. Tags/releases only; the site deploy itself is done by GitHub Pages.
+  # Runs only after GitHub's "pages build and deployment" succeeded for a push on main,
+  # i.e. the new site version is live. Creates tags/releases only; no deploy here.
   release:
     name: Release
-    needs: [ci-checks]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: >
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     steps:
-      - name: Release | Checkout repository
+      # Check out the exact commit that was deployed
+      - name: Release | Checkout deployed commit
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Release | Read version from _config.yml
+        id: version
+        run: |
+          VERSION=$(grep -E '^version:' _config.yml | head -1 | sed -E 's/^version:[[:space:]]*//; s/["'\'']//g; s/[[:space:]]+$//')
+          if [ -z "$VERSION" ]; then
+            echo "version not found in _config.yml" >&2
+            exit 1
+          fi
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
       # Skips quietly if the version in _config.yml was already released
       - name: Release | Create tag and GitHub release if missing
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ needs.ci-checks.outputs.tag }}
+          TAG: ${{ steps.version.outputs.tag }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release $TAG already exists, skipping."
           else
-            gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --generate-notes
+            gh release create "$TAG" --target "$SHA" --title "$TAG" --generate-notes
           fi
