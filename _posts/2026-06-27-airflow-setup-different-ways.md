@@ -16,7 +16,7 @@ It has a few core components like scheduler, workers, webserver/apiserver, etc.
 
 When setting up for the first time on cloud - the deployment model for all these components have changed over years. I would divide it as: 
 
-1. VM era:
+1) VM era:
 
 Teams would spin up one or more virtual machines and install Airflow directly on the OS.
 
@@ -53,7 +53,7 @@ Cons:
 - **Dependency hell**: conflicting package versions across DAGs are a constant headache
 - **Upgrades are risky**: a bad `pip upgrade` can take down the entire Airflow installation
 
-2. Container era:
+2) Container era:
 
 The era of Docker came. Instead of installing Airflow on a host OS, you'd pull (or build) a Docker image containing Airflow and all its dependencies, then run it as a container.
 
@@ -97,7 +97,7 @@ Cons:
 - **No cloud-native integration**: no automatic secrets injection, no auto-scaling, no native logging to cloud log sinks
 - **CeleryExecutor needs MessageBroker**: Like RabbitMQ/Redis extra service to manage and keep healthy
 
-3. K8s era: 
+3) K8s era: 
 
 We can now setup Airflow using helm charts on K8s. K8s provides:
 - **Self-healing:** crashed containers are automatically restarted
