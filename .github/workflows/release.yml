@@ -1,3 +1,17 @@
+# CI/CD overview
+#
+# Handled by THIS workflow:
+#   - CI Checks: YAML lint, post front matter / image reference checks, version validation
+#   - Build:     test build of the site on pull requests (pre-merge safety net)
+#   - Release:   git tag + GitHub release from `version` in _config.yml (push to main only)
+#
+# Handled AUTOMATICALLY by GitHub (not defined here):
+#   - "pages build and deployment" workflow: because Pages source is "Deploy from a branch",
+#     GitHub itself builds the Jekyll site (github-pages gem) and deploys it on every push
+#     to main. So this workflow does NOT build or deploy the live site on push to main.
+#   - Caveat: that GitHub-managed workflow runs independently, so a failed check here
+#     does not stop the live deploy. CI Checks/Build mainly protect pull requests.
+
 name: CI/CD
 
 on:
@@ -7,18 +21,19 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: write   # needed by the Release job to create tags and releases
 
 jobs:
   ci-checks:
     name: CI Checks
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.version.outputs.tag }}
+      tag: ${{ steps.version.outputs.tag }}   # consumed by the Release job
     steps:
       - name: CI Checks | Checkout repository
         uses: actions/checkout@v4
 
+      # Reads `version:` from _config.yml and exposes it as tag "vX.Y.Z"
       - name: CI Checks | Read version from _config.yml
         id: version
         run: |
@@ -29,6 +44,7 @@ jobs:
           fi
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
+      # Fails the check if version is not semantic (e.g. 1.1.11)
       - name: CI Checks | Validate version format (X.Y.Z)
         env:
           TAG: ${{ steps.version.outputs.tag }}
@@ -38,16 +54,22 @@ jobs:
             exit 1
           fi
 
+      # Rules in .yamllint.yml
       - name: CI Checks | Lint YAML (config and workflows)
         run: |
           pip install --quiet yamllint
           yamllint -c .yamllint.yml _config.yml .github/workflows
 
+      # Required front matter, allowed categories, referenced images exist
+      # (see .github/scripts/check_site.py)
       - name: CI Checks | Validate post front matter and image references
         run: python3 .github/scripts/check_site.py
 
+  # Pull requests only. On push to main, GitHub's own "pages build and deployment"
+  # workflow already builds the site, so repeating it here would be redundant.
   build:
     name: Build
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Build | Checkout repository
@@ -68,15 +90,17 @@ jobs:
             test -s "_site/$f" || { echo "Missing or empty _site/$f" >&2; exit 1; }
           done
 
+  # Push to main only. Tags/releases only; the site deploy itself is done by GitHub Pages.
   release:
     name: Release
-    needs: [ci-checks, build]
+    needs: [ci-checks]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Release | Checkout repository
         uses: actions/checkout@v4
 
+      # Skips quietly if the version in _config.yml was already released
       - name: Release | Create tag and GitHub release if missing
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
