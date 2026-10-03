@@ -21,7 +21,7 @@ This article is my attempt to focus on the areas mentioned above, where I jot do
 
 <img src="{{ site.baseurl }}/public/images/chessvocab/chessboard.jpg" alt="chessboard" class="blog-image" loading="lazy">
 
-Checkmate's:
+Checkmates:
 - Scholar's mate: 1.e4 e5 2.Qh5 Nc6 3.Bc4 Nf6 4.Qxf7# (checkmate)
   - <img src="{{ site.baseurl }}/public/images/chessvocab/scholars_mate.png" alt="scholars mate" class="blog-image" loading="lazy">
 - Fool's mate: 1.f3 e5 2.g4 Qh4# (checkmate)
@@ -83,7 +83,15 @@ Terms:
   - Zeitgeist: the defining mood of a particular era. "The film captured the zeitgeist of the 90s."
 - Idioms / Sentences:
   - Frequent rainstorms hammer this part of the coast
-  - Birds dive under the canopy of forest looking for shleter
+  - Birds dive under the canopy of forest looking for shelter
   - The dog was so excited to see his owner that he wagged his tail vigorously
+  - A thin mist crept over the valley, softening the outline of the hills
+  - The old bridge groaned under the weight of the passing trucks
+  - She scribbled furiously, afraid the idea would slip away before she finished
+  - The crowd erupted the moment the final whistle blew
+  - Dark clouds gathered on the horizon, promising a restless night
+  - He hesitated at the door, rehearsing the words he had practised all week
+  - The city never truly sleeps; it merely dims its lights and hums quietly
+  - Waves lashed against the rocks, scattering foam in every direction
 
 ---------------------------------------
