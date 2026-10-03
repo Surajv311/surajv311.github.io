@@ -29,34 +29,42 @@ Checkmate's:
 
 Stalemate: the player to move is not in check but has no legal move. The game is a draw, not a win. Common when the stronger side is careless while up material.
 
-Basic strategy notes:
-- Opening:
-  - Control the centre (e4, d4, e5, d5) with pawns and pieces.
-  - Develop knights and bishops early; avoid moving the same piece twice.
-  - Castle early to protect the king and bring the rook into play.
-  - Don't bring the queen out too early, it gets chased around.
-- Middlegame:
-  - Before every move, check what the opponent's last move threatens.
-  - Look for tactics: fork (one piece attacks two), pin (piece can't move without exposing a bigger one), skewer (big piece forced to move, exposing the one behind), discovered attack.
-  - Keep pieces protected; avoid hanging pieces.
-  - Rooks belong on open files, knights on outposts, bishops on long diagonals.
-- Endgame:
-  - Activate the king, it is a strong piece when few pieces remain.
-  - Rooks behind passed pawns; push passed pawns.
-  - Basic mates to learn: king + queen vs king, king + rook vs king.
-- Habits:
-  - Trade pieces when ahead in material, avoid trades when behind.
-  - Solve a few puzzles daily and review lost games to find the first mistake.
+Notes (reference: [chess.com](https://www.chess.com/learn)):
+
+- Common openings (White's first moves, idea):
+  - Italian Game: 1.e4 e5 2.Nf3 Nc6 3.Bc4. Develops fast and eyes f7; leads to open, tactical play.
+  - Ruy Lopez: 1.e4 e5 2.Nf3 Nc6 3.Bb5. Pressure on the knight that guards e5; slow, strategic.
+  - Queen's Gambit: 1.d4 d5 2.c4. Offers a c-pawn to take the centre; Black can accept (QGA) or decline (QGD).
+  - Sicilian Defense (Black): 1.e4 c5. Unbalanced fight; Black trades a wing pawn for a central one.
+  - French Defense (Black): 1.e4 e6. Solid but cramped; Black attacks White's centre with ...d5 and ...c5.
+  - London System: 1.d4 and 2.Bf4. Same setup against most replies, low theory.
+  - Tip: a "book move" is a standard theory move; know the ideas first, memorise lines later.
+- Tactical patterns:
+  - Back-rank mate: king stuck behind its own pawns, a rook or queen mates on the first rank. Make luft (a pawn move) to avoid it.
+  - Battery: two pieces on the same line, e.g. queen behind a rook or bishop.
+  - Discovered attack/check: moving one piece uncovers an attack from another.
+  - Deflection and decoy: drag a defender away, or lure a piece onto a bad square.
+  - Zwischenzug: an in-between move played instead of the expected recapture.
+  - Blunder: a serious mistake that loses material or the game; check the opponent's last move before every move.
+- Pawn structure and pieces:
+  - Doubled pawns: two on the same file; isolated pawn: no friendly pawn on adjacent files; backward pawn: cannot advance safely and is hard to defend; passed pawn: no enemy pawn can stop it, so it is a strong asset.
+  - Bad bishop: blocked by its own pawns on the same colour. Good bishop: pawns on the opposite colour.
+  - Outpost: a square deep in enemy territory that no enemy pawn can attack, ideal for a knight.
+  - Open file: no pawns on it, put a rook there. Seventh rank: a rook there is very strong.
+- Endgame ideas:
+  - Opposition: with kings facing each other, the side not to move holds the opposition.
+  - Lucena position: standard win with rook + pawn vs rook. Philidor position: standard draw defence.
+  - Rule of the square: quick way to see if a king can catch a passed pawn.
+  - Know basic draws: king vs king, insufficient material, threefold repetition, 50-move rule, stalemate.
+- Time controls: bullet (<3 min), blitz (3-10 min), rapid (10-60 min), classical (60+ min).
 
 Terms:
-- Check: king is under attack. Checkmate: king is attacked and cannot escape, game over.
-- Castling: king moves 2 squares towards a rook and the rook jumps over it; only if neither has moved and the path is clear and not attacked.
+- Castling: king moves 2 squares towards a rook and the rook jumps over it; only if neither has moved, the path is clear, and the king is not in or passing through check.
 - En passant: a pawn that just moved 2 squares can be captured as if it moved 1, only on the very next move.
-- Promotion: a pawn reaching the last rank becomes a queen (or rook, bishop, knight).
 - Gambit: sacrificing material (usually a pawn) in the opening for a better position.
 - Zugzwang: any move the player makes worsens their position.
 - Fianchetto: bishop developed to b2/g2/b7/g7 after a pawn move to b3/g3/b6/g6.
-- Opposition: kings facing each other with one square between, the side not to move holds the advantage.
+- Promotion: a pawn reaching the last rank becomes a queen (or rook, bishop, knight).
 
 ---------------------------
 
