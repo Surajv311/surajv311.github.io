@@ -13,6 +13,7 @@ url:              https://surajv311.github.io
 baseurl:          ""
 lang:             en-US
 logo:             /public/surajverma.png
+# Default Open Graph preview image. Per-post override possible via `image:` in post front matter.
 image:            /public/surajverma.png
 
 author:
