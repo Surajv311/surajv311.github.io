@@ -8,6 +8,8 @@ category: technicalArticles
 
 In this article, I have jotted down my understanding around Spark and Flink. 
 
+> Sidenote: These learnings reflect the versions and implementations I have worked on at the time of writing. Spark and Flink evolve quickly, so in newer releases some details may change or no longer apply.
+
 #### Spark 
 
 Basic Architecture: 
@@ -17,7 +19,7 @@ Basic Architecture:
 
 Apache Spark is an open-source distributed computing system designed for big data processing and analytics. Spark is known for its speed and efficiency. Spark enables applications to run faster by utilising in-memory cluster computing.
 
-The Apache Spark framework uses a driver/executor architecture: a driver acts as the coordinator (the "master" role), and many executors run across worker nodes in the cluster. Apache Spark can be used for batch processing and real-time processing as well.
+The Apache Spark framework uses a master-slave architecture that consists of a driver, which runs as a master node, and many executors that run across as worker nodes in the cluster. Apache Spark can be used for batch processing and real-time processing as well.
 
 Spark Driver: It is the master node of the Spark application. It is responsible for:
 - Converting user programs into a Directed Acyclic Graph (DAG) of tasks.
@@ -48,9 +50,8 @@ Worker information when running a code:
 
 Cluster Manager: It is responsible for managing resources across the cluster. It allocates resources to different applications and manages their lifecycle. Common cluster managers used with Spark include:
 - Standalone Cluster Manager: A simple built-in manager that comes with Spark.
-- Apache Mesos: A general-purpose cluster manager that can run Hadoop and other applications alongside Spark. Note: Mesos support was deprecated in Spark 3.2 and removed in Spark 4.0.
+- Apache Mesos: A general-purpose cluster manager that can run Hadoop and other applications alongside Spark.
 - Hadoop YARN: A resource management layer for Hadoop that can manage Spark applications.
-- Kubernetes: Runs the driver and executors as pods; the most common choice on cloud setups today.
 
 Data Abstractions: 
 - Resilient Distributed Datasets (RDDs): RDDs are the fundamental data structure in Spark, representing an immutable distributed collection of objects that can be processed in parallel. RDDs support two types of operations: 
@@ -104,7 +105,7 @@ Step-by-Step Execution
 
 Hardware Level Configuration:
 - Cluster Configuration: When running Spark jobs at scale, hardware configuration plays a crucial role: 
-  - Nodes in Cluster: A typical Spark cluster consists of several nodes (machines) configured as follows: The driver runs either on the submitting machine (client mode) or inside the cluster (cluster mode), while executors run on worker nodes; the cluster manager (e.g. standalone master, YARN, Kubernetes) allocates the resources. Worker nodes should have sufficient CPU cores and memory allocated based on workload requirements.
+  - Nodes in Cluster: A typical Spark cluster consists of several nodes (machines) configured as follows: Each node can act as either a master (running the driver) or worker (running executors). Worker nodes should have sufficient CPU cores and memory allocated based on workload requirements.
   - Resource Allocation: Each executor runs within its own JVM process on worker nodes. Configuration settings like spark.executor.memory and spark.executor.cores determine how much memory and how many cores each executor will use. Example configuration in spark-defaults.conf:
 
     ```
@@ -131,11 +132,11 @@ Basic Architecture (More snapshots of actual pipelines below):
 Job Manager: It is the master component responsible for coordinating the execution of jobs. It handles job submission, manages task scheduling and distribution across Task Managers, coordinates checkpoints and recovery in case of failures, and resource management. 
 - The Job Manager creates a Job Graph from the submitted application and transforms it into a Task Execution Graph for execution.
 - In a high-availability (HA) setup, you can have multiple Job Managers. However, only one Job Manager is active at any given time (the leader), while others remain as standby instances. This setup ensures that if the active Job Manager fails, one of the standby instances can take over without disrupting ongoing jobs. 
-- Flink internally uses an actor system for communication between the Job Managers and the Task Managers. It was Akka earlier; since Flink 1.18 it is Apache Pekko (the Apache fork of Akka).
+- Flink internally uses the Akka actor system for communication between the Job Managers and the Task Managers.
   - An actor system is a container of actors with various roles. It provides services such as scheduling, configuration, logging, and so on. It also contains a thread pool from where all actors are initiated. All actors reside in a hierarchy. Each newly created actor would be assigned to a parent. Actors talk to each other using a messaging system. Each actor has its own mailbox from where it reads all the messages. If the actors are local, the messages are shared through shared memory but if the actors are remote then messages are passed thought RPC calls. Each parent is responsible for the supervision of its children. If any error happens with the children, the parent gets notified. If an actor can solve its own problem then it can restart its children. If it cannot solve the problem then it can escalate the issue to its own parent: In Flink, an actor is a container having state and behavior. An actor's thread sequentially keeps on processing the messages it will receive in its mailbox. The state and the behavior are determined by the message it has received.
   - Useful: [ref](https://subscription.packtpub.com/book/big-data-and-business-intelligence/9781786466228/1/ch01lvl1sec9/distributed-execution)
 - Client: The Client is not part of the runtime but is used to submit jobs to the Job Manager. It can operate in two modes: Attached Mode (Remains connected to receive progress updates), Detached Mode (Disconnects after job submission). 
-  - Task Managers: They are the worker nodes that execute the tasks assigned by the Job Manager. Each Task Manager can run multiple tasks in parallel, depending on the number of task slots it has. Another definition; A Taskmanager (TM) is a JVM process, whereas a Taskslot (TS) is a fixed slice of the TM's resources (a slot is not a thread; the tasks running in a slot are executed by threads of the TM's JVM). The managed memory of a TM is equally split up between the TS within a TM. No CPU isolation happens between the slots, just the managed memory is divided. Moreover, TS in the same TM share TCP connections (via multiplexing) and heartbeat messages. They may also share data sets and data structures, thus reducing the per-task overhead. For example, if a Task Manager has four slots then it will allocate 25% of the memory to each slot. There could be one or more threads running in a task slot. Threads in the same slot share the same JVM. Tasks in the same JVM share TCP connections and heart beat messages. You can run multiple Task Managers on a single machine or across multiple machines. The number of Task Managers you can effectively run on a single server depends on the available resources (CPU, memory) and the workload's resource requirements. A task slot is a unit of resource scheduling, and its tasks run in threads of the TM's JVM.
+  - Task Managers: They are the worker nodes that execute the tasks assigned by the Job Manager. Each Task Manager can run multiple tasks in parallel, depending on the number of task slots it has. Another definition; A Taskmanager (TM) is a JVM process, whereas a Taskslot (TS) is a Thread within the respective JVM process (TM). The managed memory of a TM is equally split up between the TS within a TM. No CPU isolation happens between the slots, just the managed memory is divided. Moreover, TS in the same TM share TCP connections (via multiplexing) and heartbeat messages. They may also share data sets and data structures, thus reducing the per-task overhead. For example, if a Task Manager has four slots then it will allocate 25% of the memory to each slot. There could be one or more threads running in a task slot. Threads in the same slot share the same JVM. Tasks in the same JVM share TCP connections and heart beat messages. You can run multiple Task Managers on a single machine or across multiple machines. The number of Task Managers you can effectively run on a single server depends on the available resources (CPU, memory) and the workload's resource requirements. A task slot is basically a thread pool.
     - A task in Flink is an execution unit that represents a single operator or a chain of operators (subtasks) that can process data concurrently (more details on operators discussed later). The idea of slots is to slice the available resources up into smaller parts. The available managed memory is evenly distributed among all slots. CPU cycles and JVM heap memory are not properly isolated w.r.t slots. In each slot you can deploy one or more Tasks. A Flink Task is executed by a dedicated thread. Thus, you can have multiple threads running in the same slot if you have multiple Tasks deployed to it.
     - A Task represents a parallel instance of a single Flink operator or of multiple operators if they are chainable. Chaining is not always possible or desired but if applied, it will fuse operators so that they are executed by the same Task thread. This is usually more efficient since there are fewer context switches and no handing over of records to a different thread.
     - In order to improve resource utilization (especially for Tasks which need little resources) and to make the reasoning about how many slots you need to run a Flink program easier, Flink supports slot sharing. Slot sharing means that parallel instances of different operators can be deployed to the same slot. Due to this feature, Flink creates as long pipelines of different operators as possible and deploys them to the same slot.
@@ -212,8 +213,8 @@ Job Manager: It is the master component responsible for coordinating the executi
     - Case 1:
       - In eks config: taskmanager.numberOfTaskSlots: "13" and job: parallelism: 7
       - In application code env.setParallelism() at global level: Not set
-      - Say you use 3 operators - total parallel tasks (subtasks) would be 7*3 -> 21, though due to slot sharing only 7 slots are needed (slots needed = highest parallelism). 
-      - Total task managers created by flink would be: 7/13, rounded up = 1. Least number of task managers to spin up is 1. 
+      - Say you use 3 operators - total parallelism would be 7*3 -> 21. 
+      - Total task managers created by flink would be: 7/13 = 1. Least number of task managers to spin up is 1. 
         <img src="{{ site.baseurl }}/public/images/flink-ui1.png" alt="flink-ui1" class="blog-image" loading="lazy">
         <img src="{{ site.baseurl }}/public/images/flink-ui2.png" alt="flink-ui2" class="blog-image" loading="lazy">
     - Number of task managers spinned up in a flink pipeline = Parallelism / Total task slots.
@@ -263,7 +264,7 @@ Job Manager: It is the master component responsible for coordinating the executi
     - Kubelet: Kubelets are an essential part of a Kubernetes cluster. Part of each node in the cluster, Kubelets make sure containers are actually running in a pod via the Kubernetes API server. They're also responsible for registering a node within a cluster and reporting on resource utilisation.
     - Kube-controller-manager: Embeds the core control loops shipped with Kubernetes.
     - Kubernetes API Server: Provides the frontend to the cluster's shared state, which is where all of the other components interact, and validates and configures data for API objects.
-    - Kube-proxy: A network proxy that runs on each node in your cluster, maintaining network rules on nodes, which allows for network communication to your pods. It typically runs in iptables or IPVS mode (the older userspace mode was removed in Kubernetes v1.26).
+    - Kube-proxy: A network proxy that runs on each node in your cluster, maintaining network rules on nodes, which allows for network communication to your pods. It can run in one of these three modes: userspace, iptables or IPVS.
     - Kube-scheduler: The default scheduler for Kubernetes, kube-scheduler is charge of scheduling pods onto nodes.
     - Minikube: A tool that runs a single-node cluster inside a Virtual Machine on your computer. You can use Minikube to test out Kubernetes in a learning environment.
     - Namespace: A virtual cluster where you can provision resources and provide scope for pods, services and deployments. They provide a scope for unique naming in order to divide cluster resources in an environment when there are several teams and/or projects.  
@@ -302,7 +303,7 @@ Job Manager: It is the master component responsible for coordinating the executi
       - Flink Task Managers: Flink's Task Managers are analogous to Spark workers. They execute the tasks assigned by the Job Manager and manage task slots to run multiple instances of operators concurrently.
     - Task Slots vs. Executors
       - Spark Executors: Executors in Spark are responsible for executing tasks and managing memory and resources for those tasks.
-      - Flink Task Slots: In Flink, task slots represent the capacity of a Task Manager to run parallel instances of operators. Each task slot can hold one parallel slice of the pipeline, i.e. one parallel instance of each operator via slot sharing and chaining.
+      - Flink Task Slots: In Flink, task slots represent the capacity of a Task Manager to run parallel instances of operators. Each task slot can execute one operator instance at a time.
     - Support for Batch and Streaming Processing
       - Unified Processing Capabilities: Both Spark and Flink provide capabilities to handle both batch and streaming data processing. While they have different underlying architectures (micro-batching for Spark and true streaming for Flink), they allow users to work with various types of data workloads using similar APIs.
       - APIs for Data Processing: Both frameworks offer high-level APIs that abstract the complexities of distributed data processing, making it easier for developers to implement data transformations and analytics without needing to manage the underlying infrastructure directly.
@@ -323,8 +324,8 @@ Job Manager: It is the master component responsible for coordinating the executi
           - Sub-Second Latency: Flink is capable of achieving sub-second latencies even under high load conditions due to its efficient resource management and pipelined execution model.
           - Backpressure Handling: Flink’s backpressure mechanism dynamically adjusts the flow of data between operators based on their processing speeds, ensuring that no single component becomes a bottleneck.
       - State Management: State Handling
-        - Spark: While Spark can maintain state through its structured streaming API, it supports arbitrary stateful operations through mapGroupsWithState/flatMapGroupsWithState (and transformWithState in Spark 4.0), with an optional RocksDB state store.
-          - Stateful Operations in Structured Streaming: Spark allows maintaining state across batches using stateful transformations like mapGroupsWithState, but Flink's state handling (keyed/operator state, state TTL, tight integration with checkpoints) is generally considered more mature for large, long-lived state.
+        - Spark: While Spark can maintain state through its structured streaming API, it does not have built-in support for complex stateful operations.
+          - Stateful Operations in Structured Streaming: Spark allows maintaining state across batches using stateful transformations like mapGroupsWithState, but these operations may not be as flexible or efficient as Flink's state handling capabilities.
           - External State Management: For complex state management needs, Spark often relies on external systems (like databases or key-value stores), which can introduce additional latency and complexity.
         - Flink: Flink provides robust state management capabilities with exactly-once processing semantics, making it suitable for complex event-driven applications that require maintaining state over time.
           - Keyed State vs. Operator State: Flink differentiates between keyed state (state associated with specific keys) and operator state (state associated with an operator), allowing fine-grained control over how state is managed and accessed.
