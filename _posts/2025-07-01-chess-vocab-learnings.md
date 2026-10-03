@@ -38,7 +38,6 @@ Notes (reference: [chess.com](https://www.chess.com/learn)):
   - Sicilian Defense (Black): 1.e4 c5. Unbalanced fight; Black trades a wing pawn for a central one.
   - French Defense (Black): 1.e4 e6. Solid but cramped; Black attacks White's centre with ...d5 and ...c5.
   - London System: 1.d4 and 2.Bf4. Same setup against most replies, low theory.
-  - Tip: a "book move" is a standard theory move; know the ideas first, memorise lines later.
 - Tactical patterns:
   - Back-rank mate: king stuck behind its own pawns, a rook or queen mates on the first rank. Make luft (a pawn move) to avoid it.
   - Battery: two pieces on the same line, e.g. queen behind a rook or bishop.
@@ -56,7 +55,6 @@ Notes (reference: [chess.com](https://www.chess.com/learn)):
   - Lucena position: standard win with rook + pawn vs rook. Philidor position: standard draw defence.
   - Rule of the square: quick way to see if a king can catch a passed pawn.
   - Know basic draws: king vs king, insufficient material, threefold repetition, 50-move rule, stalemate.
-- Time controls: bullet (<3 min), blitz (3-10 min), rapid (10-60 min), classical (60+ min).
 
 Terms:
 - Castling: king moves 2 squares towards a rook and the rook jumps over it; only if neither has moved, the path is clear, and the king is not in or passing through check.
