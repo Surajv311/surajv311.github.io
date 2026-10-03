@@ -1,21 +1,25 @@
-name: Release Tag
+name: CI/CD
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
 
 permissions:
   contents: write
 
 jobs:
-  tag-release:
-    name: Tag and release from _config.yml version
+  ci-checks:
+    name: CI Checks
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
     steps:
-      - name: 1. Checkout repository
+      - name: CI Checks | Checkout repository
         uses: actions/checkout@v4
 
-      - name: 2. Read version from _config.yml
+      - name: CI Checks | Read version from _config.yml
         id: version
         run: |
           VERSION=$(grep -E '^version:' _config.yml | head -1 | sed -E 's/^version:[[:space:]]*//; s/["'\'']//g; s/[[:space:]]+$//')
@@ -25,10 +29,44 @@ jobs:
           fi
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: 3. Create tag and release if missing
+      - name: CI Checks | Validate version format (X.Y.Z)
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if ! echo "$TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Invalid version '$TAG' in _config.yml, expected X.Y.Z" >&2
+            exit 1
+          fi
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build | Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build | Set up Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Build | Build Jekyll site
+        run: bundle exec jekyll build
+
+  release:
+    name: Release
+    needs: [ci-checks, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release | Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Release | Create tag and GitHub release if missing
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ steps.version.outputs.tag }}
+          TAG: ${{ needs.ci-checks.outputs.tag }}
         run: |
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release $TAG already exists, skipping."

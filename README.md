@@ -25,4 +25,4 @@ Site is served at http://localhost:4000.
 
 #### Releases
 
-On every push to `main`, `.github/workflows/release.yml` reads `version` from `_config.yml` and creates tag + GitHub release `v<version>` if it does not exist yet. Bump `version` in `_config.yml` to cut a new release.
+`.github/workflows/release.yml` runs three jobs: CI Checks (reads and validates `version` from `_config.yml`), Build (`jekyll build`), and Release. CI Checks and Build also run on pull requests to `main`. On push to `main`, Release creates tag + GitHub release `v<version>` if it does not exist yet. Bump `version` in `_config.yml` to cut a new release.
