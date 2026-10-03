@@ -32,7 +32,7 @@ defaults:
       image: /public/surajverma.png
 
 # Custom vars
-version:          1.1.12
+version:          1.1.13
 
 github:
   repo:           https://github.com/Surajv311/surajv311.github.io
