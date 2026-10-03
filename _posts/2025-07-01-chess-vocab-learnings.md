@@ -10,6 +10,8 @@ This article is my attempt to focus on the areas mentioned above, where I jot do
 
 ## Chess: 
 
+Notes (reference: [chess.com](https://www.chess.com/learn))
+
 | Piece      | Unicode Symbol | Notation Symbol | Point Value      | Description of Moves                                                                                |
 | ---------- | -------------- | --------------- | ---------------- | --------------------------------------------------------------------------------------------------- |
 | **Pawn**   | ♙ / ♟︎         | *(none)*        | **1**            | Moves forward 1 square (2 on first move), captures diagonally                                       |
@@ -28,8 +30,6 @@ Checkmates:
   - <img src="{{ site.baseurl }}/public/images/chessvocab/fools_mate.png" alt="fools mate" class="blog-image" loading="lazy">
 
 Stalemate: the player to move is not in check but has no legal move. The game is a draw, not a win. Common when the stronger side is careless while up material.
-
-Notes (reference: [chess.com](https://www.chess.com/learn)):
 
 - Common openings (White's first moves, idea):
   - Italian Game: 1.e4 e5 2.Nf3 Nc6 3.Bc4. Develops fast and eyes f7; leads to open, tactical play.
