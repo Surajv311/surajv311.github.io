@@ -52,7 +52,7 @@ ansible-vault encrypt keys.yml --vault-password-file=~/vault_pass_no_prompt ## e
 
 So the expired key was also fixed. 
 
-Tip: to check Ansible runs on a machine, use `top`. Each running playbook shows up as an `ansible-playbook` process, along with its CPU/memory usage and runtime.
+Sidenote: Each running playbook shows up as an `ansible-playbook` process, along with its CPU/memory usage and runtime.
 
 <img src="{{ site.baseurl }}/public/images/ansible-top-commands-ec2.png" alt="top output on an EC2 machine showing ansible-playbook processes" class="blog-image" loading="lazy">
 
