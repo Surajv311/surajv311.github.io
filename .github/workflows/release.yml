@@ -8,7 +8,7 @@
 #                so a tag always means the site is live.
 #
 # Handled AUTOMATICALLY by GitHub (not defined here):
-#   - "pages build and deployment" workflow: because Pages source is "Deploy from a branch",
+#   - "pages-build-deployment" workflow (shown as "pages build and deployment"): because Pages source is "Deploy from a branch",
 #     GitHub itself builds the Jekyll site (github-pages gem) and deploys it on every push
 #     to main. So this workflow does NOT build or deploy the live site on push to main.
 #   - Caveat: that GitHub-managed workflow runs independently, so a failed check here
@@ -29,7 +29,7 @@ on:
     branches: [main]
   # Fires when GitHub's built-in Pages workflow finishes. Used to release after deploy.
   workflow_run:
-    workflows: ["pages build and deployment"]
+    workflows: ["pages-build-deployment"]
     types: [completed]
 
 permissions:
