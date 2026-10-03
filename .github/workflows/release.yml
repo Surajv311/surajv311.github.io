@@ -38,6 +38,14 @@ jobs:
             exit 1
           fi
 
+      - name: CI Checks | Lint YAML (config and workflows)
+        run: |
+          pip install --quiet yamllint
+          yamllint -c .yamllint.yml _config.yml .github/workflows
+
+      - name: CI Checks | Validate post front matter and image references
+        run: python3 .github/scripts/check_site.py
+
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -53,6 +61,12 @@ jobs:
 
       - name: Build | Build Jekyll site
         run: bundle exec jekyll build
+
+      - name: Build | Verify generated output (index, feed, sitemap)
+        run: |
+          for f in index.html feed.xml sitemap.xml 404.html; do
+            test -s "_site/$f" || { echo "Missing or empty _site/$f" >&2; exit 1; }
+          done
 
   release:
     name: Release
