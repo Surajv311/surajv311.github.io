@@ -8,13 +8,11 @@ permalink:        pretty
 # Setup
 title:            Suraj Verma
 tagline:          Engineering
-description:      Software Engineer | Learning stuff...
+description:      Software Engineer, learning stuff
 url:              https://surajv311.github.io
 baseurl:          ""
 lang:             en-US
 logo:             /public/surajverma.png
-# Default Open Graph preview image. Per-post override possible via `image:` in post front matter.
-image:            /public/surajverma.png
 
 author:
   name:           'Suraj Verma'
@@ -25,6 +23,13 @@ social:
   links:
     - https://in.linkedin.com/in/surajverma-sv
     - https://github.com/Surajv311
+
+# Default Open Graph preview image for all pages. Override per post via `image:` in its front matter.
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /public/surajverma.png
 
 # Custom vars
 version:          1.1.11
