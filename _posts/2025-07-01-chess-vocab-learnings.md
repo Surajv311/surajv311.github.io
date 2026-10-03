@@ -65,16 +65,19 @@ Terms:
 - Frequent rainstorms hammer this part of the coast
 - Birds dive under the canopy of forest looking for shleter
 - The dog was so excited to see his owner that he wagged his tail vigorously
-- Ephemeral: lasting a very short time. "Fame on social media is ephemeral."
-- Ubiquitous: found everywhere. "Smartphones are ubiquitous now."
-- Meticulous: very careful about details. "She is meticulous about her notes."
-- Resilient: recovers quickly from difficulty. "A resilient system survives failures."
-- Pragmatic: practical, focused on what works. "Take a pragmatic approach to the problem."
-- Nuance: a subtle difference in meaning or tone. "The word has a different nuance here."
-- Candid: honest and straightforward. "He gave a candid review."
-- Idiom: "Break the ice" means to start a conversation in an awkward situation.
-- Idiom: "Bite the bullet" means to face something unpleasant with courage.
-- Idiom: "Once in a blue moon" means very rarely.
+- Sycophant: a person who flatters someone powerful to gain favour. "The CEO was surrounded by sycophants who never disagreed."
+- Equivocate: to speak vaguely to avoid committing to a position. "Asked about the delay, he equivocated."
+- Obfuscate: to make something deliberately unclear. "The report obfuscated the real numbers."
+- Magnanimous: generous and forgiving, especially towards a rival. "She was magnanimous in victory."
+- Perfunctory: done with minimal effort, as a routine. "He gave the code a perfunctory review."
+- Ostensibly: apparently, but perhaps not truly. "He left ostensibly for health reasons."
+- Capricious: given to sudden, unpredictable changes of mood or behaviour. "The capricious weather ruined the plans."
+- Laconic: using very few words. "His laconic reply: 'Fine.'"
+- Insidious: harmful in a gradual, hidden way. "Burnout is insidious; it creeps up on you."
+- Zeitgeist: the defining mood of a particular era. "The film captured the zeitgeist of the 90s."
+- Idiom: "The elephant in the room" means an obvious problem everyone avoids discussing.
+- Idiom: "Throw someone under the bus" means to sacrifice someone to save yourself.
+- Idiom: "Read the room" means to sense the mood of a group and act accordingly.
 
 
 ---------------------------------------
