@@ -4,7 +4,7 @@ title: Busy Spinning for Market Replay Service
 category: technicalArticles
 ---
 
-> From my experience working at [Punch](https://www.punch.trade/). Refactored my article a bit with help of GPT. 
+> From my experience working at [Punch.Trade-Broker](https://www.punch.trade/). Refactored my article a bit with help of GPT. 
 
 I was building a system from scratch using a Go service with a NATS + JetStream stack to simulate and replay financial markets in a staging environment.
 
