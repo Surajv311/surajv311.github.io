@@ -4,7 +4,7 @@ title: Kafka Consumers
 category: technicalArticles
 ---
 
-> From my experience working at [Simpl](https://simpl.com/).
+> From my experience working at [Simpl-BNPL](https://simpl.com/).
 
 A few days ago, I was working on a project when I got distracted by an error originating from one of the Kafka consumers our team owns.
 The consumers read events from Kafka, add some metadata, and dump it in S3. It's a python based microservice running on AWS ECS.
