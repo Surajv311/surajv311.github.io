@@ -4,7 +4,7 @@ title: Syncing Kafkas - MM2
 category: technicalArticles
 ---
 
-> From my experience working at [GreyOrange](https://www.greyorange.com/). Refactored my article a bit with help of GPT. 
+> From my experience working at [GreyOrange-Robotics](https://www.greyorange.com/). Refactored my article a bit with help of GPT. 
 
 I was working on a problem statement to sync data from multi-tenant kafkas to central kafka. Upon research, I came across MirrorMaker2. 
 
