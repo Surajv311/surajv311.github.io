@@ -4,7 +4,7 @@ title: DB Write Protocols & Proxies
 category: technicalArticles
 ---
 
-> From my experience working at [GreyOrange](https://www.greyorange.com/). Refactored my article a bit with help of GPT.
+> From my experience working at [GreyOrange-Robotics](https://www.greyorange.com/). Refactored my article a bit with help of GPT.
 
 I was working on a component of a golang-service that intercepted InfluxDB writes (proxy), to enforce few rules like dropping unoptimised queries, emitting query metrics, mirroring writes to Kafka, etc. As a part of exploring the service, I learned about how different databases actually receive writes under the hood. The protocol a DB uses determines everything — I have discussed the same in this article at a high level.
 
