@@ -4,7 +4,7 @@ title: Cleanup of a bulky Postgres table
 category: technicalArticles
 ---
 
-> From my experience working at [Simpl](https://simpl.com/). 
+> From my experience working at [Simpl-BNPL](https://simpl.com/). 
 
 I worked on an interesting task along with the devops team of cleaning up a bulky legacy Postgres table in the db, which was causing cluster-wide performance degradation (Eg: Auto-vacuum processes were triggering frequently, locking table and impacting writes across the entire database cluster). 
 Example:
