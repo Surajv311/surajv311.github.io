@@ -4,7 +4,7 @@ title: Playing around with Ansible
 category: technicalArticles
 ---
 
-> From my experience working at [Simpl](https://simpl.com/).
+> From my experience working at [Simpl-BNPL](https://simpl.com/).
 
 In this article, I write my experience around debugging an issue and getting an opportunity to work with Ansible. Will highlight things at a top level. 
 We have a service which powers our Airflow & distributed computing infra. Deployment of the service is a fairly complex process as it involves different steps.
