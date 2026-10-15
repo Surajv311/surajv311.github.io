@@ -4,7 +4,7 @@ title: Working with Spark & Flink
 category: technicalArticles
 ---
 
-> From my experience working at [Simpl](https://simpl.com/). 
+> From my experience working at [Simpl-BNPL](https://simpl.com/). 
 
 In this article, I have jotted down my understanding around Spark and Flink. 
 
