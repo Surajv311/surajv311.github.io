@@ -4,7 +4,7 @@ title: DNS Misconfiguration Issue
 category: technicalArticles
 ---
 
-> From my experience working at [Punch](https://www.punch.trade/). 
+> From my experience working at [Punch.Trade-Broker](https://www.punch.trade/). 
 
 Recently, I was discussing the issue with devops which made me brush up concepts related to DNS. In short, one of the pages of main website of Punch had a broken CSS/styling. 
 This happened because the DNS record for that page was probably pointing to the wrong Application Load Balancer (staging service or other). 
