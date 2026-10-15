@@ -4,7 +4,7 @@ title: Crossing paths with bugs, issues, unknown systems, and more
 category: technicalArticles
 ---
 
-> From my experience working at [Simpl](https://simpl.com/).
+> From my experience working at [Simpl-BNPL](https://simpl.com/).
 
 In this article, I jot down, different issues & bugs I or my teammates faced in software systems along with fixes we did. Note that a lot of them are quick fixes which we did in the interest of time and escalation. Long term fixes for them were implemented as well - that part, will probably cover in another blog. 
 I may miss a few of them, or rather its just tip of the iceberg, but have added as many as my memory serves me right. 
