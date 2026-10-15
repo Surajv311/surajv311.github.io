@@ -4,7 +4,7 @@ title: Debugging silent connection leak in service
 category: technicalArticles
 ---
 
-> From my experience working at [Simpl](https://simpl.com/). 
+> From my experience working at [Simpl-BNPL](https://simpl.com/). 
 
 - Some brief: We had a monolith Ruby-Rails service which was fairly complex having frontend/backend/kafka consumers related components. It interacted with various postgres RDS tables, external APIs, Kafka, RabbitMQ cluster(s). It was deployed on ECS, running over 30 tasks in parallel. 
 - Issue: Our alerts (Cloudwatch+Zenduty) notified us of an unusual drop in database connection counts (these were constant-workload tables by the way). The service appeared healthy on the surface as well as the frontend UI component of the service was working fine, but there were issues underneath.
