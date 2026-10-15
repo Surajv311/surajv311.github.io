@@ -4,7 +4,7 @@ title: Kafka Producer Knobs
 category: technicalArticles
 ---
 
-> From my experience working at [GreyOrange](https://www.greyorange.com/). Refactored my article a bit with help of GPT. 
+> From my experience working at [GreyOrange-Robotics](https://www.greyorange.com/). Refactored my article a bit with help of GPT. 
 
 I was working on a service with a senior engineer that did some light processing and produced events to Kafka in the background. This component was a part of broader pipeline that had to be exactly-once semantics. Hence as part of work, I came across interesting producer configs, which I will discuss. 
 
