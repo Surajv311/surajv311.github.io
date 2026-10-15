@@ -4,7 +4,7 @@ title: Tech Cost optimizations
 category: technicalArticles
 ---
 
-> From my experience working at [Simpl](https://simpl.com/).
+> From my experience working at [Simpl-BNPL](https://simpl.com/).
 
 When it comes to saving costs around systems, if looked deeply, we'll find many avenues to save cost. As a part of work, learned lots of things around this working on it myself and listening to how other teams saved cost.
 It's not exhaustive list, but have tried adding as many as I recall. 
