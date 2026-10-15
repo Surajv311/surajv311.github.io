@@ -4,7 +4,7 @@ title: Setting up Airflow (and other OSS) - Past vs Today
 category: technicalArticles
 ---
 
-> From my experience working at [GreyOrange](https://www.greyorange.com/). Refactored my article a bit with help of GPT. 
+> From my experience working at [GreyOrange-Robotics](https://www.greyorange.com/). Refactored my article a bit with help of GPT. 
 
 I had the fortune of working in data teams of different companies, and one thing that I noticed is the evolution of setting up OSS (open-source software) on cloud.  
 
