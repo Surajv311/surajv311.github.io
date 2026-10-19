@@ -6,7 +6,22 @@ category: technicalArticles
 
 > From my experience working at [GreyOrange-Robotics](https://www.greyorange.com/). Refactored my article a bit with help of GPT.
 
-I was working on a component of a golang-service that intercepted InfluxDB writes (proxy), to enforce few rules like dropping unoptimised queries, emitting query metrics, mirroring writes to Kafka, etc. As a part of exploring the service, I learned about how different databases actually receive writes under the hood. The protocol a DB uses determines everything — I have discussed the same in this article at a high level.
+I was working on a component of a golang-service that intercepted InfluxDB writes (proxy service), and did a few things like: drop that query if unoptimised, expose query metrics, mirror writes to Kafka, etc. As a part of exploring the service, I learned about how different databases actually receive writes under the hood. The protocol a DB uses determines everything — I have discussed the same in this article at a high level.
+
+```
+Eg: 
+┌────────────┐      ┌────────────────┐      ┌────────────┐
+│ Client app │─────▶│ Proxy service  │─────▶│  InfluxDB  │
+│            │      │ (Go)           │      │  :8086     │
+└────────────┘      └───────┬────────┘      └────────────┘
+                            │
+              ┌─────────────┼─────────────┐
+              ▼             ▼             ▼
+      ┌──────────────┐ ┌─────────┐ ┌─────────────┐
+      │ Reject 403   │ │  Kafka  │ │   Metrics   │
+      │ bad queries  │ │ mirror  │ │ query stats │
+      └──────────────┘ └─────────┘ └─────────────┘
+```
 
 There are two fundamentally different classes of DB write protocols.
 
